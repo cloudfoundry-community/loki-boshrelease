@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eux
+
+mkdir -p "${BOSH_INSTALL_TARGET}/bin"
+cp -a jq/jq-linux64-1.6 "${BOSH_INSTALL_TARGET}/bin/jq"
+chmod +x "${BOSH_INSTALL_TARGET}/bin/jq"

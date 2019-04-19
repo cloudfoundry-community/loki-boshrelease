@@ -1,0 +1,10 @@
+---
+name: loki
+
+dependencies:
+  - golang
+
+files:
+  - build/bosh-go.bash
+  - common/utils.sh
+  - loki/**/*

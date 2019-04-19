@@ -1,0 +1,36 @@
+fontconfig/fontconfig-2.13.1.tar.gz:
+  size: 2063278
+  object_id: a5ff7c62-0fa5-4928-50ed-571082da6e20
+  sha: e073e1d23d9d6e83a8d2d6eafa5905a541b77975
+freefont/freefont-otf-20120503.tar.gz:
+  size: 4487813
+  object_id: 66170796-ce93-430b-7b47-42e8e3e194d4
+  sha: dad7600fa9eed4116c2aaa561228e3879565f7aa
+freetype/freetype-2.9.1.tar.gz:
+  size: 2533956
+  object_id: 4d0f333e-98b8-4f2b-4dd0-c1304691ec46
+  sha: 7498739e34e5dca4c61d05efdde6191ba69a2df0
+golang/go1.12.4.linux-amd64.tar.gz:
+  size: 127928770
+  object_id: ceda6ae4-2ed4-4ec5-5b5a-6349c15ef45b
+  sha: sha256:d7d1f1f88ddfe55840712dc1747f37a790cbcaa448f6c9cf51bbe10aa65442f5
+gperf/gperf-3.1.tar.gz:
+  size: 1215925
+  object_id: 14e8f4be-ab5e-4bbd-64a1-1c5966f5c28b
+  sha: e3c0618c2d2e5586eda9498c867d5e4858a3b0e2
+grafana/grafana-6.1.4.linux-amd64.tar.gz:
+  size: 56564647
+  object_id: 323b3f79-9083-4a42-5f4d-55f851f8e1a3
+  sha: c2869a86516fbdbbff8a7241ac739ca33771bb45
+jq/jq-linux64-1.6:
+  size: 3953824
+  object_id: 073ed1cc-4a3a-43ff-46a3-d4ffb7a08b17
+  sha: 056ba5d6bbc617c29d37158ce11fd5a443093949
+libxml2/libxml2-2.9.8.tar.gz:
+  size: 5469097
+  object_id: 1b55fab2-cc47-4e84-5452-fca27a017f2c
+  sha: 66bcefd98a6b7573427cf66f9d3841b59eb5b8c3
+util-linux/util-linux-2.32.tar.gz:
+  size: 9710610
+  object_id: df7eb80f-ff61-4202-7310-c85af60b2c0d
+  sha: 3733acf6e023c0340daf6933dc648e3eed70b2b8

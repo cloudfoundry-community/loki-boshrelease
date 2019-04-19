@@ -1,0 +1,111 @@
+---
+name: loki
+
+instance_groups:
+  - name: loki
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    persistent_disk: 10_240
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: loki
+        release: loki
+        provides:
+          loki: {as: loki, shared: true}
+        properties:
+          loki:
+            auth:
+              enabled: false
+            index:
+              storage: boltdb
+            chunks:
+              storage: filesystem
+            validation:
+              enforce_metric_name: false
+
+  - name: database
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    persistent_disk: 10_240
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: postgres
+        release: postgres
+        properties:
+          databases:
+            port: 5432
+            databases:
+              - name: grafana
+                citext: true
+            roles:
+              - name: grafana
+                password: ((postgres_grafana_password))
+
+  - name: grafana
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    persistent_disk: 1_024
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: grafana
+        release: loki
+        properties:
+          grafana:
+            database:
+              type: postgres
+              port: 5432
+              name: grafana
+              user: grafana
+              password: ((postgres_grafana_password))
+            session:
+              provider: postgres
+              provider_port: 5432
+              provider_name: grafana
+              provider_user: grafana
+              provider_password: ((postgres_grafana_password))
+            security:
+              admin_user: admin
+              admin_password: ((grafana_password))
+              secret_key: ((grafana_secret_key))
+
+variables:
+  - name: prometheus_password
+    type: password
+  - name: postgres_grafana_password
+    type: password
+  - name: grafana_password
+    type: password
+  - name: grafana_secret_key
+    type: password
+
+update:
+  canaries: 1
+  max_in_flight: 32
+  canary_watch_time: 1000-100000
+  update_watch_time: 1000-100000
+  serial: false
+
+stemcells:
+  - alias: default
+    os: ubuntu-xenial
+    version: latest
+
+releases:
+- name: loki
+  version: latest
+- name: postgres
+  version: 36
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=36
+  sha1: 3dd10b417b21cfa3257f1cc891e9e46f02fefe16

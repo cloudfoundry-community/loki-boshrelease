@@ -1,0 +1,35 @@
+---
+name: loki
+
+templates:
+  bin/loki_ctl: bin/loki_ctl
+  config/config.yml: config/config.yml
+
+packages:
+  - loki
+
+provides:
+  - name: loki
+    type: loki
+    properties:
+      - loki.server.http_listen_port
+
+properties:
+  loki.auth.enabled:
+    description: "Set to false to disable auth"
+    default: true
+  loki.server.http_listen_port:
+    description: "HTTP server listen port"
+    default: 3100
+
+  loki.index.storage:
+    description: "An index storage for Loki (boltdb, gcs, s3)"
+    default: boltdb
+
+  loki.chunks.storage:
+    description: "A chunks storage for Loki (filesystem, bigtable, dynamodb)"
+    default: filesystem
+
+  loki.validation.enforce_metric_name:
+    description: "Enforce every sample has a metric name"
+    default: true
