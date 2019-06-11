@@ -1,10 +1,6 @@
 ---
 name: loki
 
-dependencies:
-  - golang
-
 files:
-  - build/bosh-go.bash
   - common/utils.sh
   - loki/loki_v0.1.0_linux_amd64
