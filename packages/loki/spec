@@ -7,4 +7,4 @@ dependencies:
 files:
   - build/bosh-go.bash
   - common/utils.sh
-  - loki/**/*
+  - loki/loki_v0.1.0_linux_amd64

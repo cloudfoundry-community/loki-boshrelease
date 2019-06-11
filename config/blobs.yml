@@ -30,6 +30,10 @@ libxml2/libxml2-2.9.8.tar.gz:
   size: 5469097
   object_id: 1b55fab2-cc47-4e84-5452-fca27a017f2c
   sha: 66bcefd98a6b7573427cf66f9d3841b59eb5b8c3
+loki/loki_v0.1.0_linux_amd64:
+  size: 29292672
+  object_id: 3aaa6411-1ffa-4247-5daa-190b28637cf9
+  sha: sha256:0cec248e3e382d3cda193c42e1bfab4faf0093ff6374464ebc64e01c5b62a968
 util-linux/util-linux-2.32.tar.gz:
   size: 9710610
   object_id: df7eb80f-ff61-4202-7310-c85af60b2c0d

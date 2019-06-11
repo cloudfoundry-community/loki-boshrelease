@@ -5,14 +5,7 @@ set -euo pipefail
 mkdir -p ${BOSH_INSTALL_TARGET}/common
 cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-# shellcheck source=../../src/build/bosh-go.bash
-source build/bosh-go.bash
-
-mkdir -p "${GOPATH}/src/github.com/grafana/loki"
-
-cp -a loki/. "${GOPATH}/src/github.com/grafana/loki"
-
-go build -o "${BOSH_INSTALL_TARGET}/bin/loki" github.com/grafana/loki/cmd/loki
-
-# clean up source artifacts
-rm -rf "${BOSH_INSTALL_TARGET}/src" "${BOSH_INSTALL_TARGET}/pkg"
+# Copy Loki binary
+mkdir -p "${BOSH_INSTALL_TARGET}/bin"
+cp -a loki/loki_v0.1.0_linux_amd64 "${BOSH_INSTALL_TARGET}/bin/loki"
+chmod +x "${BOSH_INSTALL_TARGET}/bin/loki"

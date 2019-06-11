@@ -1,3 +1,0 @@
-[submodule "src/loki"]
-	path = src/loki
-	url = https://github.com/grafana/loki.git
