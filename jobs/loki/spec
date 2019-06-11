@@ -33,3 +33,7 @@ properties:
   loki.validation.enforce_metric_name:
     description: "Enforce every sample has a metric name"
     default: true
+
+  loki.store.max_look_back_period:
+    description: "Limit how long back data can be queried"
+    default: 0
