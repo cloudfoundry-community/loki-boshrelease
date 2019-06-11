@@ -10,9 +10,10 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/loki.pid
 
+# shellcheck source=../../../../src/common/utils.sh
 source /var/vcap/packages/loki/common/utils.sh
-exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
-exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+exec 1>> "${LOG_DIR}/$(basename "$0").stdout.log"
+exec 2>> "${LOG_DIR}/$(basename "$0").stderr.log"
 
 export PATH=/var/vcap/packages/loki/bin:${PATH}
 
@@ -38,4 +39,3 @@ case $1 in
 
 esac
 exit 0
-
