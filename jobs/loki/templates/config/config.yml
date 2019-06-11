@@ -13,7 +13,7 @@ ingester:
 
 schema_config:
   configs:
-  - from: 0
+  - from: 2018-04-15
     <% if p('loki.index.storage') == "boltdb" %>
     store: boltdb
     <% end %>
