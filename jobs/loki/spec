@@ -37,3 +37,10 @@ properties:
   loki.store.max_look_back_period:
     description: "Limit how long back data can be queried"
     default: 0
+
+  loki.retention.deletes_enabled:
+    description: "Enable deletes for retention"
+    default: false
+  loki.retention.period:
+    description: "Retention period needs to be a duration in string format that can be parsed using time.Duration"
+    default: 168h
