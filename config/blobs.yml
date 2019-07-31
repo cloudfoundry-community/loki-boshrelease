@@ -16,6 +16,7 @@ gperf/gperf-3.1.tar.gz:
   sha: e3c0618c2d2e5586eda9498c867d5e4858a3b0e2
 grafana/grafana-6.2.5.linux-amd64.tar.gz:
   size: 58512371
+  object_id: fc47b617-198a-4212-49fb-71c555c1578c
   sha: sha256:48bb6e93c1d063d4d2f960be0dba8f40acc88aa534c3ac653cb9d5f9424feca7
 jq/jq-linux64-1.6:
   size: 3953824
