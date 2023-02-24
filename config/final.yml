@@ -1,8 +1,6 @@
 ---
 name: loki
 blobstore:
-  provider: s3
+  provider: local
   options:
-    bucket_name: loki-boshrelease
-    region: us-central1
-    host: storage.googleapis.com
+    blobstore_path: /tmp/redis-blobs

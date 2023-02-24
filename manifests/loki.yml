@@ -6,11 +6,7 @@ instance_groups:
     azs:
       - z1
     instances: 1
-    vm_type: default
     persistent_disk: 10_240
-    stemcell: default
-    networks:
-      - name: default
     jobs:
       - name: loki
         release: loki
@@ -18,77 +14,26 @@ instance_groups:
           loki: {as: loki, shared: true}
         properties:
           loki:
+            tls: false
             auth:
               enabled: false
+            server:
+              http_listen_address: localhost
+              http_listen_port: 3100
             index:
               storage: boltdb
-            chunks:
+            object_store:
               storage: filesystem
             validation:
               enforce_metric_name: false
-
-  - name: database
-    azs:
-      - z1
-    instances: 1
-    vm_type: default
-    persistent_disk: 10_240
-    stemcell: default
+              reject_old_samples: true
+              reject_old_samples_max_age: 672h
+            retention:
+              period: "168h"
     networks:
-      - name: default
-    jobs:
-      - name: postgres
-        release: postgres
-        properties:
-          databases:
-            port: 5432
-            databases:
-              - name: grafana
-                citext: true
-            roles:
-              - name: grafana
-                password: ((postgres_grafana_password))
-
-  - name: grafana
-    azs:
-      - z1
-    instances: 1
-    vm_type: default
-    persistent_disk: 1_024
+      - name: cf
     stemcell: default
-    networks:
-      - name: default
-    jobs:
-      - name: grafana
-        release: loki
-        properties:
-          grafana:
-            database:
-              type: postgres
-              port: 5432
-              name: grafana
-              user: grafana
-              password: ((postgres_grafana_password))
-            session:
-              provider: postgres
-              provider_port: 5432
-              provider_name: grafana
-              provider_user: grafana
-              provider_password: ((postgres_grafana_password))
-            security:
-              admin_user: admin
-              admin_password: ((grafana_password))
-              secret_key: ((grafana_secret_key))
-
-variables:
-  - name: prometheus_password
-    type: password
-  - name: postgres_grafana_password
-    type: password
-  - name: grafana_password
-    type: password
-  - name: grafana_secret_key
-    type: password
+    vm_type: vm_2cpu_4gb
 
 update:
   canaries: 1
@@ -99,13 +44,10 @@ update:
 
 stemcells:
   - alias: default
-    os: ubuntu-xenial
-    version: latest
+    os: ubuntu-jammy
+    version: "1.83"
 
 releases:
 - name: loki
-  version: latest
-- name: postgres
-  version: 36
-  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=36
-  sha1: 3dd10b417b21cfa3257f1cc891e9e46f02fefe16
+  version: 0+dev.1
+  sha1: 507e71c+
