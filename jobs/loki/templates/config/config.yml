@@ -5,9 +5,9 @@ server:
   http_listen_port: <%= p('loki.server.http_listen_port') %>
   <% if p('loki.tls') == "true" %>
   http_tls_config:
-    cert_file: /var/vcap/jobs/fluentd/certs/cert.crt
-    key_file: /var/vcap/jobs/fluentd/certs/cert.key
-    client_ca_file: /var/vcap/jobs/fluentd/certs/ca.crt
+    cert_file: /var/vcap/jobs/loki/certs/cert.crt
+    key_file: /var/vcap/jobs/loki/certs/cert.key
+    client_ca_file: /var/vcap/jobs/loki/certs/ca.crt
   <% end %>
 
 ingester:
