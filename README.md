@@ -84,7 +84,7 @@ instance_groups:
             reject_old_samples_max_age: 672h
           retention:
             period: "168h"
-          tls: false
+          tls: "false"
         
 update:
   canaries: 1
@@ -101,7 +101,7 @@ You can configure TLS by adding the certificates to the properties section
 ```yaml
       properties:
         loki:
-            tls: true
+            tls: "true"
             cert:
               ca: |
                 -----BEGIN CERTIFICATE-----
