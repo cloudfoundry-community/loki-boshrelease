@@ -40,7 +40,7 @@ Succeeded
 
 **Please execute the following commands:**
 1. `bash scripts/update-the-blobs.sh` or use on scratch release creations `bash scripts/update-the-blobs.sh --force`
-2. `bosh create-release --final --tarball fluentd-boshrelease.tgz`
+2. `bosh create-release --final --tarball loki-boshrelease.tgz`
 
 ## Configuration
 
