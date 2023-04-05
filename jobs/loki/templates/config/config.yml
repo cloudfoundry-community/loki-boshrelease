@@ -3,11 +3,14 @@ auth_enabled: <%= p('loki.auth.enabled') %>
 server:
   http_listen_address: <%= p('loki.server.http_listen_address') %>
   http_listen_port: <%= p('loki.server.http_listen_port') %>
-  <% if p('loki.tls') == true %>
+  <% if p('loki.tls') == true || if p('loki.mtls') == true %>
   http_tls_config:
-    cert_file: /var/vcap/jobs/loki/certs/cert.crt
+    cert_file: /var/vcap/jobs/loki/certs/cert.pem
     key_file: /var/vcap/jobs/loki/certs/cert.key
-    client_ca_file: /var/vcap/jobs/loki/certs/ca.crt
+    <% if p('loki.mtls') == true %>
+    client_ca_file: /var/vcap/jobs/loki/certs/ca.pem
+    client_auth_type: <%= p('loki.client_auth_type') %>
+    <% end %>
   <% end %>
 
 ingester:

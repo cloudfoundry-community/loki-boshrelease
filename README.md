@@ -103,6 +103,26 @@ You can configure TLS by adding the certificates to the properties section
         loki:
             tls: true
             cert:
+              crt: |
+                -----BEGIN CERTIFICATE-----
+                ...
+                -----END CERTIFICATE-----
+              key: |
+                -----BEGIN PRIVATE KEY-----
+                ...
+                -----END PRIVATE KEY-----
+```
+
+### Configuration with mTLS
+
+You can configure mTLS by adding the certificates to the properties section
+
+```yaml
+      properties:
+        loki:
+            mtls: true
+            client_auth_type: "RequestClientCert"
+            cert:
               ca: |
                 -----BEGIN CERTIFICATE-----
                 ...
