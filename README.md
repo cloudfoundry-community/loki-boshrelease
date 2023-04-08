@@ -2,6 +2,13 @@
 
 This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki).
 
+# TODO
+- [x] Fix the erb templating bug
+- [x] Update the documentation
+
+# Follow up
+- [ ] Add gRPC support
+
 ## Prospects
 It's planned to ship the release to the community, and I'm currently in discussion with the community to create a public available bosh.io version.
 
@@ -85,7 +92,15 @@ instance_groups:
           retention:
             period: "168h"
           tls: false
-        
+      promtail:
+          auth:
+            enabled: false
+          server:
+            http_listen_address: localhost
+            http_listen_port: 3100
+          tls: false
+          external_labels:
+            - syslog: "input"
 update:
   canaries: 1
   max_in_flight: 10
@@ -101,6 +116,17 @@ You can configure TLS by adding the certificates to the properties section
 ```yaml
       properties:
         loki:
+            tls: true
+            cert:
+              crt: |
+                -----BEGIN CERTIFICATE-----
+                ...
+                -----END CERTIFICATE-----
+              key: |
+                -----BEGIN PRIVATE KEY-----
+                ...
+                -----END PRIVATE KEY-----
+        promtail:
             tls: true
             cert:
               crt: |
@@ -138,6 +164,25 @@ You can configure mTLS by adding the certificates to the properties section
                 -----BEGIN PRIVATE KEY-----
                 ...
                 -----END PRIVATE KEY-----
+        promtail:
+          mtls: true
+          client_auth_type: "RequestClientCert"
+          cert:
+            ca: |
+              -----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----
+              -----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----
+            crt: |
+              -----BEGIN CERTIFICATE-----
+              ...
+              -----END CERTIFICATE-----
+            key: |
+              -----BEGIN PRIVATE KEY-----
+              ...
+              -----END PRIVATE KEY-----
 ```
 
 ## Tear Down the deployment

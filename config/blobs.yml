@@ -6,3 +6,7 @@ loki-linux64-2.7.4:
   size: 56614912
   object_id: 7689eced-7acd-4a68-7770-9fe2453c8a97
   sha: sha256:09a8cf0267e66d8b043d32a5117e5b97c447f8c90c25d23b85ac0efe7dd46da1
+promtail-linux64-2.7.4:
+  size: 56614912
+  object_id: 7689eced-7acd-4a68-7770-9fe2453c8a97
+  sha: sha256:09a8cf0267e66d8b043d32a5117e5b97c447f8c90c25d23b85ac0efe7dd46da1

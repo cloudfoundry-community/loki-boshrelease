@@ -1,0 +1,6 @@
+---
+name: promtail
+
+files:
+  - common/utils.sh
+  - promtail-linux64-2.7.4

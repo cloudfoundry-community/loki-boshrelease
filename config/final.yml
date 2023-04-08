@@ -3,4 +3,4 @@ name: loki
 blobstore:
   provider: local
   options:
-    blobstore_path: /tmp/redis-blobs
+    blobstore_path: /tmp/loki-blobs
