@@ -11,21 +11,21 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 get_latest_loki_release() {
-  curl --silent "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
+  curl --silent -L "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
 }
 
 # shellcheck disable=SC2034
 loki_version=$(get_latest_loki_release)
 
 get_latest_jq_release() {
-  curl --silent "https://api.github.com/repos/stedolan/jq/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "-" -f 2
+  curl --silent -L "https://api.github.com/repos/jqlang/jq/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "-" -f 2
 }
 
 # shellcheck disable=SC2034
 jq_version=$(get_latest_jq_release)
 
 get_latest_promtail_release() {
-  curl --silent "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
+  curl --silent -L "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
 }
 
 # shellcheck disable=SC2034
@@ -54,7 +54,7 @@ fi
 
 # shellcheck disable=SC2050
 if [[ "$jq_version" != "$used_jq_version" || "$force" == "TRUE" ]]; then
-  wget https://github.com/stedolan/jq/releases/download/jq-$jq_version/jq-linux64
+  wget https://github.com/jqlang/jq/releases/download/jq-$jq_version/jq-linux64
   bosh add-blob jq-linux64 jq-linux64-$jq_version
   rm jq-linux64
   sed -i -e "s/jq-linux64-${used_jq_version}/jq-linux64-${jq_version}/g" packages/jq/spec

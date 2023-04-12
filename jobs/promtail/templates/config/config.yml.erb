@@ -1,16 +1,38 @@
 server:
+  disable: <%= p('promtail.server.disable') %>
+  http_listen_network: <%= p('promtail.server.http_listen_network') %>
   http_listen_address: <%= p('promtail.server.http_listen_address') %>
   http_listen_port: <%= p('promtail.server.http_listen_port') %>
+  http_listen_conn_limit: <%= p('promtail.server.http_listen_conn_limit') %>
+  http_server_read_timeout: <%= p('promtail.server.http_server_read_timeout') %>
+  http_server_write_timeout: <%= p('promtail.server.http_server_write_timeout') %>
+  http_server_idle_timeout: <%= p('promtail.server.http_server_idle_timeout') %>
+<% if_p("promtail.http.tls", "promtail.http.mtls") do |promtail_http_tls,promtail_http_mtls| %>
+<% if promtail_http_tls == true || promtail_http_mtls == true %>
+  http_tls_config:
+    cert_file: /var/vcap/jobs/promtail/http/certs/cert.pem
+    key_file: /var/vcap/jobs/promtail/http/certs/cert.key
+  <% if promtail_http_mtls == true %>
+    client_ca_file: /var/vcap/jobs/promtail/http/certs/ca.pem
+    client_auth_type: <%= p('promtail.http.client_auth_type') %>
+  <% end %>
+<% end %>
+<% end %>
+  grpc_listen_network: <%= p('promtail.server.grpc_listen_network') %>
   grpc_listen_address: <%= p('promtail.server.grpc_listen_address') %>
   grpc_listen_port: <%= p('promtail.server.grpc_listen_port') %>
-<% if_p("promtail.tls", "promtail.mtls") do |promtail_tls,promtail_mtls| %>
-<% if promtail_tls == true || promtail_mtls == true %>
-  http_tls_config:
-    cert_file: /var/vcap/jobs/promtail/certs/cert.pem
-    key_file: /var/vcap/jobs/promtail/certs/cert.key
-  <% if promtail_mtls == true %>
-    client_ca_file: /var/vcap/jobs/promtail/certs/ca.pem
-    client_auth_type: <%= p('promtail.client_auth_type') %>
+  grpc_listen_conn_limit: <%= p('promtail.server.grpc_listen_conn_limit') %>
+  grpc_server_max_recv_msg_size: <%= p('promtail.server.grpc_server_max_recv_msg_size') %>
+  grpc_server_max_send_msg_size: <%= p('promtail.server.grpc_server_max_send_msg_size') %>
+  grpc_server_max_concurrent_streams: <%= p('promtail.server.grpc_server_max_concurrent_streams') %>
+<% if_p("promtail.grpc.tls", "promtail.grpc.mtls") do |promtail_grpc_tls,promtail_grpc_mtls| %>
+<% if promtail_grpc_tls == true || promtail_grpc_mtls == true %>
+  grpc_tls_config:
+    cert_file: /var/vcap/jobs/promtail/grpc/certs/cert.pem
+    key_file: /var/vcap/jobs/promtail/grpc/certs/cert.key
+  <% if promtail_grpc_mtls == true %>
+    client_ca_file: /var/vcap/jobs/promtail/grpc/certs/ca.pem
+    client_auth_type: <%= p('promtail.grpc.client_auth_type') %>
   <% end %>
 <% end %>
 <% end %>
@@ -28,10 +50,13 @@ clients:
       cert_file: /var/vcap/jobs/promtail/loki/certs/cert.pem
       key_file: /var/vcap/jobs/promtail/loki/certs/cert.key
   <% end %>
+<% end %>
+<% end %>
     external_labels:
-      <%= p('promtail.loki.external_labels') %>
+<% p('promtail.loki.external_labels').each_pair do |promtail_loki_external_labels, promtail_loki_external_label_values| %>
+      <%= "#{promtail_loki_external_labels}: #{promtail_loki_external_label_values}" %>
 <% end %>
-<% end %>
+
 scrape_configs:
   - job_name: syslog
     syslog:
@@ -49,5 +74,7 @@ scrape_configs:
       idle_timeout: <%= p('promtail.syslog.idle_timeout') %>
 <% if p('promtail.syslog.labels').nil? %>
       labels:
-        <%= p('promtail.syslog.labels') %>
+<% p('promtail.syslog.labels').each_pair do |promtail_syslog_labels, promtail_syslog_label_values| %>
+        <%= "#{promtail_syslog_labels}: #{promtail_syslog_label_values}" %>
+<% end %>
 <% end %>
