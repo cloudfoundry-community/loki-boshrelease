@@ -1,0 +1,142 @@
+---
+name: promtail
+
+templates:
+  bin/promtail_ctl: bin/promtail_ctl
+  config/config.yml.erb: config/config.yml
+  certs/ca.pem.erb: certs/ca.pem
+  certs/cert.pem.erb: certs/cert.pem
+  certs/cert.key.erb: certs/cert.key
+  loki/certs/ca.pem.erb: loki/certs/ca.pem
+  loki/certs/cert.pem.erb: loki/certs/cert.pem
+  loki/certs/cert.key.erb: loki/certs/cert.key
+  syslog/certs/ca.pem.erb: syslog/certs/ca.pem
+  syslog/certs/cert.pem.erb: syslog/certs/cert.pem
+  syslog/certs/cert.key.erb: syslog/certs/cert.key
+
+packages:
+  - promtail
+
+provides:
+  - name: promtail
+    type: promtail
+
+properties:
+  promtail.server.grpc_listen_address:
+    description: "GRPC server listen address"
+    default: "localhost"
+
+  promtail.server.grpc_listen_port:
+    description: "GRPC server listen port"
+    default: 9096
+
+  promtail.server.http_listen_address:
+    description: "HTTP server listen address"
+    default: "localhost"
+
+  promtail.server.http_listen_port:
+    description: "HTTP server listen port"
+    default: 9100
+
+  promtail.tls:
+    description: "Specify if tls should be used"
+    default: false
+
+  promtail.mtls:
+    description: "Specify if mTLS should be used"
+    default: false
+
+  promtail.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS"
+      default: ""
+
+  promtail.cert.ca:
+    description: "Specify the ca cert"
+    default: ""
+
+  promtail.cert.crt:
+    description: "Specify the client cert"
+    default: ""
+
+  promtail.cert.key:
+    description: "Specify the client key"
+    default: ""
+
+  promtail.positions.filename:
+    description: "Specify the file of the positions to restore the state in case of an restart"
+    default: "/tmp/positions.yaml"
+
+  promtail.loki.tls:
+    description: "Specify if Loki uses tls"
+    default: false
+
+  promtail.loki.mtls:
+    description: "Specify if Loki uses mTLS"
+    default: false
+
+  promtail.loki.server.http_listen_address:
+    description: "Specify the Loki server listen address"
+    default: "localhost"
+
+  promtail.loki.server.http_listen_port:
+    description: "Specify the Loki server listen port"
+    default: 3100
+
+  promtail.loki.server_name:
+    description: "Specify the Loki server name in case of TLS/ mTLS"
+    default: ""
+
+  promtail.loki.insecure_skip_verify:
+    description: "Specify the if the Loki certificate should be verified in case of TLS/ mTLS"
+    default: true
+
+  promtail.loki.external_labels:
+    description: "Specify the necessary labels for the forwarding process to Loki"
+
+  promtail.loki.cert.ca:
+    description: "Specify the Loki ca cert"
+    default: ""
+
+  promtail.loki.cert.crt:
+    description: "Specify the Loki client cert"
+    default: ""
+
+  promtail.loki.cert.key:
+    description: "Specify the Loki client key"
+    default: ""
+
+  promtail.syslog.listen_address:
+    description: "Specify the Syslog server listen address"
+    default: "0.0.0.0"
+
+  promtail.syslog.listen_port:
+    description: "Specify the Syslog server listen port"
+    default: 514
+
+  promtail.syslog.tls:
+    description: "Specify if Syslog uses tls"
+    default: false
+
+  promtail.syslog.mtls:
+    description: "Specify if Syslog uses mTLS"
+    default: ""
+
+  promtail.syslog.cert.ca:
+    description: "Specify the Syslog ca cert"
+    default: ""
+
+  promtail.syslog.cert.crt:
+    description: "Specify the Syslog client cert"
+    default: ""
+
+  promtail.syslog.cert.key:
+    description: "Specify the Syslog client key"
+    default: ""
+
+  promtail.syslog.idle_timeout:
+    description: "Specify the Syslog idle timeout value in seconds"
+    default: "300s"
+
+  promtail.syslog.labels:
+    description: "Specify the optional Syslog labels"
+    default: nil

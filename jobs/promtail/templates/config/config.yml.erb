@@ -1,0 +1,53 @@
+server:
+  http_listen_address: <%= p('promtail.server.http_listen_address') %>
+  http_listen_port: <%= p('promtail.server.http_listen_port') %>
+  grpc_listen_address: <%= p('promtail.server.grpc_listen_address') %>
+  grpc_listen_port: <%= p('promtail.server.grpc_listen_port') %>
+<% if_p("promtail.tls", "promtail.mtls") do |promtail_tls,promtail_mtls| %>
+<% if promtail_tls == true || promtail_mtls == true %>
+  http_tls_config:
+    cert_file: /var/vcap/jobs/promtail/certs/cert.pem
+    key_file: /var/vcap/jobs/promtail/certs/cert.key
+  <% if promtail_mtls == true %>
+    client_ca_file: /var/vcap/jobs/promtail/certs/ca.pem
+    client_auth_type: <%= p('promtail.client_auth_type') %>
+  <% end %>
+<% end %>
+<% end %>
+positions:
+  filename: <%= p('promtail.positions.filename') %>
+clients:
+<% if_p("promtail.loki.tls", "promtail.loki.mtls") do |promtail_loki_tls,promtail_loki_mtls| %>
+  - url: <% if promtail_loki_tls == true || promtail_loki_mtls == true %>https://<% else %>https://<% end %><%= p('promtail.loki.server.http_listen_address') %>:<%= p('promtail.loki.server.http_listen_port') %>/loki/api/v1/push
+<% if promtail_loki_tls == true || promtail_loki_mtls == true %>
+    tls_config:
+      ca_file: /var/vcap/jobs/promtail/loki/certs/ca.pem
+      server_name: <%= p('promtail.loki.server_name') %>
+      insecure_skip_verify: <%= p('promtail.loki.insecure_skip_verify') %>
+  <% if promtail_loki_mtls == true %>
+      cert_file: /var/vcap/jobs/promtail/loki/certs/cert.pem
+      key_file: /var/vcap/jobs/promtail/loki/certs/cert.key
+  <% end %>
+    external_labels:
+      <%= p('promtail.loki.external_labels') %>
+<% end %>
+<% end %>
+scrape_configs:
+  - job_name: syslog
+    syslog:
+      listen_address: <%= p('promtail.syslog.listen_address') %>:<%= p('promtail.syslog.listen_port') %>
+<% if_p("promtail.syslog.tls", "promtail.syslog.mtls") do |promtail_syslog_tls,promtail_syslog_mtls| %>
+<% if promtail_syslog_tls == true || promtail_syslog_mtls == true %>
+      tls_config:
+        cert_file: /var/vcap/jobs/promtail/syslog/certs/cert.pem
+        key_file: /var/vcap/jobs/promtail/syslog/certs/cert.key
+  <% if promtail_syslog_mtls == true %>
+        ca_file: /var/vcap/jobs/promtail/syslog/certs/ca.pem
+  <% end %>
+<% end %>
+<% end %>
+      idle_timeout: <%= p('promtail.syslog.idle_timeout') %>
+<% if p('promtail.syslog.labels').nil? %>
+      labels:
+        <%= p('promtail.syslog.labels') %>
+<% end %>

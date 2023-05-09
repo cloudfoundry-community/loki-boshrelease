@@ -30,6 +30,24 @@ instance_groups:
               reject_old_samples_max_age: 672h
             retention:
               period: "168h"
+      - name: promtail
+        release: loki
+        provides:
+          promtail: { as: promtail, shared: true }
+        properties:
+          promtail:
+            tls: false
+            server:
+              http_listen_address: localhost
+              http_listen_port: 9090
+            external_labels:
+              - syslog: "input"
+            syslog:
+              listen_address: 0.0.0.0
+              listen_port: 601
+              idle_timeout: 300
+              labels:
+                - app: "syslog_test"
     networks:
       - name: cf
     stemcell: default
@@ -50,4 +68,4 @@ stemcells:
 releases:
 - name: loki
   version: 0+dev.1
-  sha1: 507e71c+
+  sha1: 811bfef+

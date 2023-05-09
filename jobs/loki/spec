@@ -3,9 +3,9 @@ name: loki
 
 templates:
   bin/loki_ctl: bin/loki_ctl
-  config/config.yml: config/config.yml
-  certs/ca.crt.erb: certs/ca.crt
-  certs/cert.crt.erb: certs/cert.crt
+  config/config.yml.erb: config/config.yml
+  certs/ca.pem.erb: certs/ca.pem
+  certs/cert.pem.erb: certs/cert.pem
   certs/cert.key.erb: certs/cert.key
 
 packages:
@@ -14,14 +14,11 @@ packages:
 provides:
   - name: loki
     type: loki
-    properties:
-      - loki.server.http_listen_port
-      - loki.server.http_listen_address
 
 properties:
   loki.auth.enabled:
-    description: "Set to false to disable auth"
-    default: true
+    description: "Set to true to enable auth"
+    default: false
 
   loki.server.http_listen_address:
     description: "HTTP server listen address"
@@ -57,7 +54,15 @@ properties:
 
   loki.tls:
     description: "Specify if tls should be used"
-    default: "false"
+    default: false
+
+  loki.mtls:
+    description: "Specify if mTLS should be used"
+    default: false
+
+  loki.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS"
+      default: "RequireAndVerifyClientCert"
 
   loki.cert.ca:
     description: "Specify the ca cert"
