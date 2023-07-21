@@ -35,7 +35,7 @@ properties:
 
   promtail.server.http_listen_address:
     description: "HTTP server listen address"
-    default: "localhost"
+    default: "127.0.0.1"
 
   promtail.server.http_listen_port:
     description: "HTTP server listen port"
@@ -87,7 +87,7 @@ properties:
 
   promtail.server.grpc_listen_address:
     description: "gRPC server listen address"
-    default: "localhost"
+    default: "127.0.0.1"
 
   promtail.server.grpc_listen_port:
     description: "gRPC server listen port"
@@ -147,7 +147,7 @@ properties:
 
   promtail.loki.server.http_listen_address:
     description: "Specify the Loki server listen address"
-    default: "localhost"
+    default: "127.0.0.1"
 
   promtail.loki.server.http_listen_port:
     description: "Specify the Loki server listen port"

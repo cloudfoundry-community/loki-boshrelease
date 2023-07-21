@@ -29,7 +29,7 @@ properties:
 
   loki.server.http_listen_address:
     description: "HTTP server listen address"
-    default: "localhost"
+    default: "0.0.0.0"
 
   loki.server.http_listen_port:
     description: "HTTP server listen port"
@@ -45,7 +45,7 @@ properties:
 
   loki.server.grpc_listen_address:
     description: "gRPC server listen address"
-    default: "localhost"
+    default: "0.0.0.0"
 
   loki.server.grpc_listen_port:
     description: "gRPC server listen port"
