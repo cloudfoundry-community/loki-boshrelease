@@ -5,6 +5,11 @@ This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki).
 ## Prospects
 It's planned to ship the release to the community, and I'm currently in discussion with the community to create a public available bosh.io version.
 
+## TODO 
+
+- [ ] Patch the used versions automatically and upload it via Github actions to the release.
+- [ ] Add the GRPC documentation
+
 ## Prerequisites
 
 Assuming you've installed `BOSH CLI` and have a running BOSH Director.
@@ -184,7 +189,7 @@ You can find more available configuration parameters for Loki e.g. HTTP timeouts
 
 ### More configuration parameters for Promtail
 
-You can find more available configuration parameters for Promtail e.g HTTP timeouts or the gRPC configuration inside the [spec](jobs/promtail/spec) file.
+You can find more available configuration parameters for Promtail e.g. HTTP timeouts or the gRPC configuration inside the [spec](jobs/promtail/spec) file.
 
 ## Tear Down the deployment
 
