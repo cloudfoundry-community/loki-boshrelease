@@ -4,9 +4,12 @@ name: loki
 templates:
   bin/loki_ctl: bin/loki_ctl
   config/config.yml.erb: config/config.yml
-  certs/ca.pem.erb: certs/ca.pem
-  certs/cert.pem.erb: certs/cert.pem
-  certs/cert.key.erb: certs/cert.key
+  http/certs/ca.pem.erb: http/certs/ca.pem
+  http/certs/cert.pem.erb: http/certs/cert.pem
+  http/certs/cert.key.erb: http/certs/cert.key
+  grpc/certs/ca.pem.erb: grpc/certs/ca.pem
+  grpc/certs/cert.pem.erb: grpc/certs/cert.pem
+  grpc/certs/cert.key.erb: grpc/certs/cert.key
 
 packages:
   - loki
@@ -20,13 +23,37 @@ properties:
     description: "Set to true to enable auth"
     default: false
 
+  loki.server.http_listen_network:
+    description: "HTTP server listen network"
+    default: "tcp"
+
   loki.server.http_listen_address:
     description: "HTTP server listen address"
-    default: "localhost"
+    default: "0.0.0.0"
 
   loki.server.http_listen_port:
     description: "HTTP server listen port"
     default: 3100
+
+  loki.server.http_listen_conn_limit:
+    description: "HTTP server listen connection limit"
+    default: 0
+
+  loki.server.grpc_listen_network:
+    description: "gRPC server listen network"
+    default: "tcp"
+
+  loki.server.grpc_listen_address:
+    description: "gRPC server listen address"
+    default: "0.0.0.0"
+
+  loki.server.grpc_listen_port:
+    description: "gRPC server listen port"
+    default: 9095
+
+  loki.server.grpc_listen_conn_limit:
+    description: "gRPC server listen connection limit"
+    default: 0
 
   loki.index.storage:
     description: "An index storage for Loki (boltdb, gcs, s3)"
@@ -52,26 +79,50 @@ properties:
     description: "Retention period needs to be a duration in string format that can be parsed using time.Duration"
     default: "168h"
 
-  loki.tls:
-    description: "Specify if tls should be used"
+  loki.http.tls:
+    description: "Specify if tls for http should be used"
     default: false
 
-  loki.mtls:
-    description: "Specify if mTLS should be used"
+  loki.http.mtls:
+    description: "Specify if mTLS for http should be used"
     default: false
 
-  loki.client_auth_type:
-      description: "Specify the used client auth type in case of mTLS"
+  loki.http.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS for http"
       default: "RequireAndVerifyClientCert"
 
-  loki.cert.ca:
-    description: "Specify the ca cert"
+  loki.http.cert.ca:
+    description: "Specify the ca cert for http"
     default: ""
 
-  loki.cert.crt:
-    description: "Specify the client cert"
+  loki.http.cert.crt:
+    description: "Specify the client cert for http"
     default: ""
 
-  loki.cert.key:
-    description: "Specify the client key"
+  loki.http.cert.key:
+    description: "Specify the client key for http"
+    default: ""
+
+  loki.grpc.tls:
+    description: "Specify if tls for gRPC should be used"
+    default: false
+
+  loki.grpc.mtls:
+    description: "Specify if mTLS for gRPC should be used"
+    default: false
+
+  loki.grpc.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS for gRPC"
+      default: "RequireAndVerifyClientCert"
+
+  loki.grpc.cert.ca:
+    description: "Specify the ca cert for gRPC"
+    default: ""
+
+  loki.grpc.cert.crt:
+    description: "Specify the client cert for gRPC"
+    default: ""
+
+  loki.grpc.cert.key:
+    description: "Specify the client key for gRPC"
     default: ""

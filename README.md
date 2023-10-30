@@ -1,16 +1,9 @@
 # Loki BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki).
-
-# TODO
-- [x] Fix the erb templating bug
-- [x] Update the documentation
-
-# Follow up
-- [ ] Add gRPC support
+This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki), [Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/) and the [Syslog plugin](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#syslog). The Bosh release supports for the complete system and all components GRPC and mTLS.  
 
 ## Prospects
-It's planned to ship the release to the community, and I'm currently in discussion with the community to create a public available bosh.io version.
+It's planned to ship the release to the CloudFoundry community, and I'm currently in discussion with the community to create a public available bosh.io version.
 
 ## Prerequisites
 
@@ -184,6 +177,14 @@ You can configure mTLS by adding the certificates to the properties section
               ...
               -----END PRIVATE KEY-----
 ```
+
+### More configuration parameters for Loki
+
+You can find more available configuration parameters for Loki e.g. HTTP timeouts or the gRPC configuration inside the [spec](jobs/loki/spec) file.
+
+### More configuration parameters for Promtail
+
+You can find more available configuration parameters for Promtail e.g. HTTP timeouts or the gRPC configuration inside the [spec](jobs/promtail/spec) file.
 
 ## Tear Down the deployment
 

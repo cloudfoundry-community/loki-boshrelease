@@ -3,4 +3,4 @@ name: loki
 
 files:
   - common/utils.sh
-  - loki-linux64-2.7.4
+  - loki-linux64-2.9.2
