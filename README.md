@@ -3,11 +3,10 @@
 This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki).
 
 ## Prospects
-It's planned to ship the release to the community, and I'm currently in discussion with the community to create a public available bosh.io version.
+It's planned to ship the release to the CloudFoundry community, and I'm currently in discussion with the community to create a public available bosh.io version.
 
 ## TODO 
 
-- [ ] Patch the used versions automatically and upload it via Github actions to the release.
 - [ ] Add the GRPC documentation
 
 ## Prerequisites
