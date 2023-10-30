@@ -1,13 +1,9 @@
 # Loki BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki).
+This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki), [Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/) and the [Syslog plugin](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#syslog). The Bosh release supports for the complete system and all components GRPC and mTLS.  
 
 ## Prospects
 It's planned to ship the release to the CloudFoundry community, and I'm currently in discussion with the community to create a public available bosh.io version.
-
-## TODO 
-
-- [ ] Add the GRPC documentation
 
 ## Prerequisites
 
