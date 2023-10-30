@@ -4,9 +4,12 @@ name: promtail
 templates:
   bin/promtail_ctl: bin/promtail_ctl
   config/config.yml.erb: config/config.yml
-  certs/ca.pem.erb: certs/ca.pem
-  certs/cert.pem.erb: certs/cert.pem
-  certs/cert.key.erb: certs/cert.key
+  http/certs/ca.pem.erb: http/certs/ca.pem
+  http/certs/cert.pem.erb: http/certs/cert.pem
+  http/certs/cert.key.erb: http/certs/cert.key
+  grpc/certs/ca.pem.erb: grpc/certs/ca.pem
+  grpc/certs/cert.pem.erb: grpc/certs/cert.pem
+  grpc/certs/cert.key.erb: grpc/certs/cert.key
   loki/certs/ca.pem.erb: loki/certs/ca.pem
   loki/certs/cert.pem.erb: loki/certs/cert.pem
   loki/certs/cert.key.erb: loki/certs/cert.key
@@ -22,44 +25,112 @@ provides:
     type: promtail
 
 properties:
-  promtail.server.grpc_listen_address:
-    description: "GRPC server listen address"
-    default: "localhost"
+  promtail.server.disable:
+    description: "Disable the HTTP and gRPC server"
+    default: false
 
-  promtail.server.grpc_listen_port:
-    description: "GRPC server listen port"
-    default: 9096
+  promtail.server.http_listen_network:
+    description: "HTTP server listen network"
+    default: "tcp"
 
   promtail.server.http_listen_address:
     description: "HTTP server listen address"
-    default: "localhost"
+    default: "127.0.0.1"
 
   promtail.server.http_listen_port:
     description: "HTTP server listen port"
     default: 9100
 
-  promtail.tls:
-    description: "Specify if tls should be used"
+  promtail.server.http_listen_conn_limit:
+    description: "HTTP server listen connection limit"
+    default: 0
+
+  promtail.server.http_server_read_timeout:
+    description: "HTTP server read timeout"
+    default: "30s"
+
+  promtail.server.http_server_write_timeout:
+    description: "HTTP server write timeout"
+    default: "30s"
+
+  promtail.server.http_server_idle_timeout:
+    description: "HTTP server idle timeout"
+    default: "120s"
+
+  promtail.http.tls:
+    description: "Specify if tls for http should be used"
     default: false
 
-  promtail.mtls:
-    description: "Specify if mTLS should be used"
+  promtail.http.mtls:
+    description: "Specify if mTLS for http should be used"
     default: false
 
-  promtail.client_auth_type:
-      description: "Specify the used client auth type in case of mTLS"
+  promtail.http.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS for http"
       default: ""
 
-  promtail.cert.ca:
-    description: "Specify the ca cert"
+  promtail.http.cert.ca:
+    description: "Specify the ca cert for http"
     default: ""
 
-  promtail.cert.crt:
-    description: "Specify the client cert"
+  promtail.http.cert.crt:
+    description: "Specify the client cert for http"
     default: ""
 
-  promtail.cert.key:
-    description: "Specify the client key"
+  promtail.http.cert.key:
+    description: "Specify the client key for http"
+    default: ""
+
+  promtail.server.grpc_listen_network:
+    description: "gRPC server listen network"
+    default: "tcp"
+
+  promtail.server.grpc_listen_address:
+    description: "gRPC server listen address"
+    default: "127.0.0.1"
+
+  promtail.server.grpc_listen_port:
+    description: "gRPC server listen port"
+    default: 9096
+
+  promtail.server.grpc_listen_conn_limit:
+    description: "gRPC server listen connection limit"
+    default: 0
+
+  promtail.server.grpc_server_max_recv_msg_size:
+    description: "gRPC server max recv msg size"
+    default: 4194304
+
+  promtail.server.grpc_server_max_send_msg_size:
+    description: "gRPC server max send msg size"
+    default: 4194304
+
+  promtail.server.grpc_server_max_concurrent_streams:
+    description: "gRPC server max concurrent stream calls"
+    default: 100
+
+  promtail.grpc.tls:
+    description: "Specify if tls for gRPC should be used"
+    default: false
+
+  promtail.grpc.mtls:
+    description: "Specify if mTLS for gRPC should be used"
+    default: false
+
+  promtail.grpc.client_auth_type:
+      description: "Specify the used client auth type in case of mTLS for gRPC"
+      default: ""
+
+  promtail.grpc.cert.ca:
+    description: "Specify the ca cert for gRPC"
+    default: ""
+
+  promtail.grpc.cert.crt:
+    description: "Specify the client cert for gRPC"
+    default: ""
+
+  promtail.grpc.cert.key:
+    description: "Specify the client key for gRPC"
     default: ""
 
   promtail.positions.filename:
@@ -76,7 +147,7 @@ properties:
 
   promtail.loki.server.http_listen_address:
     description: "Specify the Loki server listen address"
-    default: "localhost"
+    default: "127.0.0.1"
 
   promtail.loki.server.http_listen_port:
     description: "Specify the Loki server listen port"

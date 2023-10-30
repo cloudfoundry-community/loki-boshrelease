@@ -1,0 +1,154 @@
+name: Version bump the Jq, Loki, Promtail version and create a new release
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        type: boolean
+        description: Force create the release version
+        default: 'false'
+  schedule:
+    - cron: "0 0 */15 * *"
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install the requirements
+        run: sudo apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC sudo apt install jq curl git sed nodejs make wget unzip -y
+
+      - name: Create the cache
+        run: mkdir /tmp/cache /tmp/loki-blobs
+
+      - name: Download Bosh CLI
+        run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${BOSH_VERSION}-linux-amd64 > bosh && chmod 777 bosh
+        env:
+          BOSH_VERSION: 7.4.0
+
+      - name: Checkout the latest Loki Boshrelease
+        uses: actions/checkout@v4
+        with:
+          repository: ZPascal/loki-boshrelease
+          submodules: "recursive"
+          persist-credentials: false
+
+      - name: Get latest download urls
+        run: |
+          echo "LATEST_JQ_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/jqlang/jq/releases/latest | jq -r '.assets[].browser_download_url' | grep 'jq-linux-amd64$')" >> $GITHUB_ENV
+          echo "LATEST_LOKI_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.assets[].browser_download_url' | grep 'loki-linux-amd64')" >> $GITHUB_ENV
+          echo "LATEST_PROMTAIL_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.assets[].browser_download_url' | grep 'promtail-linux-amd64')" >> $GITHUB_ENV
+
+      - name: Get latest versions
+        run: |
+          echo "LATEST_JQ_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/jqlang/jq/releases/latest | jq -r '.tag_name' | sed 's/jq-//')" >> $GITHUB_ENV
+          echo "LATEST_LOKI_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> $GITHUB_ENV
+          echo "LATEST_PROMTAIL_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> $GITHUB_ENV
+
+      - name: Set the Git safe directory
+        run: git config --global --add safe.directory /__w/loki-boshrelease/loki-boshrelease
+
+      - name: Identify the used versions
+        run: |
+          echo "USED_JQ_VERSION=$(cat config/blobs.yml | grep -o "jq-linux64-[[:digit:]].[[:digit:]]" | cut -d "-" -f 3)" >> $GITHUB_ENV
+          echo "USED_LOKI_VERSION=$(cat config/blobs.yml | grep loki | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
+          echo "USED_PROMTAIL_VERSION=$(cat config/blobs.yml | grep promtail | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
+
+      - name: Delete the blob configuration temporary
+        run: rm config/blobs.yml 2> /dev/null && touch config/blobs.yml
+
+      - name: Execute the version bump
+        run: |
+          curl -sL $LATEST_JQ_DOWNLOAD_URL -o /tmp/cache/jq-linux64-$LATEST_JQ_VERSION
+          /tmp/cache/bosh add-blob /tmp/cache/jq-linux64-$LATEST_JQ_VERSION jq-linux64-$LATEST_JQ_VERSION
+          curl -sL $LATEST_LOKI_DOWNLOAD_URL -o /tmp/cache/loki-linux64-$LATEST_LOKI_VERSION.zip
+          unzip /tmp/cache/loki-linux64-$LATEST_LOKI_VERSION.zip -d /tmp/cache
+          rm /tmp/cache/loki-linux64-$LATEST_LOKI_VERSION.zip
+          /tmp/cache/bosh add-blob /tmp/cache/loki-linux-amd64 loki-linux64-$LATEST_LOKI_VERSION
+          curl -sL $LATEST_PROMTAIL_DOWNLOAD_URL -o /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip
+          unzip /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip -d /tmp/cache
+          rm /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip
+          /tmp/cache/bosh add-blob /tmp/cache/promtail-linux-amd64 promtail-linux64-$LATEST_PROMTAIL_VERSION
+          /tmp/cache/bosh blobs
+          /tmp/cache/bosh upload-blobs
+        shell: bash
+
+      - name: Replace the used JQ version
+        run: sed -i -e "s/jq-linux64-$USED_JQ_VERSION/jq-linux64-$LATEST_JQ_VERSION/g" packages/jq/spec
+        shell: bash
+
+      - name: Replace the used Loki version
+        run: |
+          sed -i -e "s/loki-linux64-$USED_LOKI_VERSION/loki-linux64-$LATEST_LOKI_VERSION/g" packages/loki/spec
+        shell: bash
+
+      - name: Replace the used Promtail version
+        run: |
+          sed -i -e "s/promtail-linux64-$USED_PROMTAIL_VERSION/promtail-linux64-$LATEST_PROMTAIL_VERSION/g" packages/promtail/spec
+        shell: bash
+
+      - name: Check changed files
+        uses: tj-actions/verify-changed-files@v16
+        id: verify-changed-files-vendor
+        with:
+          files: |
+            packages
+
+      - name: Commit files
+        if: steps.verify-changed-files-vendor.outputs.files_changed == 'true' || inputs.force == true
+        continue-on-error: true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add packages config/blobs.yml
+          git commit -m "Create a new loki-boshrelease"
+
+      - name: Remove the blobs
+        run: |
+          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /tmp/cache/yq && sudo chmod +x /tmp/cache/yq
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/loki/index.yml
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/promtail/index.yml
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/jq/index.yml
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/loki/index.yml
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/promtail/index.yml
+#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/license/index.yml
+        shell: bash
+
+      - name: Create the bosh release
+        id: loki-boshrelease
+        run: |
+          echo "LOKI_BOSHRELEASE_VERSION=$(/tmp/cache/bosh create-release --final --force --tarball=loki-boshrelease.tgz | sed -n '2p' | sed 's/[\t]*$//g')" >> $GITHUB_ENV
+
+      - name: Check changed files
+        if: steps.verify-changed-files-vendor.outputs.files_changed == 'true' || inputs.force == true
+
+        uses: tj-actions/verify-changed-files@v16
+        id: verify-changed-files-release
+        with:
+          files: |
+            .final_builds
+            releases/loki/index.yml
+
+      - name: Commit files
+        if: (steps.verify-changed-files-vendor.outputs.files_changed == 'true' && steps.verify-changed-files-release.outputs.files_changed == 'true') || inputs.force == true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .final_builds releases/loki/index.yml "releases/loki/loki-${LOKI_BOSHRELEASE_VERSION}.yml"
+          git commit -m "Create loki-boshrelease version ${LOKI_BOSHRELEASE_VERSION}"
+          git tag -a "v${LOKI_BOSHRELEASE_VERSION}" HEAD -m "Create the new Loki release version v${LOKI_BOSHRELEASE_VERSION}"
+
+      - name: Push changes to the branch
+        uses: ad-m/github-push-action@master
+        if: (steps.verify-changed-files-vendor.outputs.files_changed == 'true' && steps.verify-changed-files-release.outputs.files_changed == 'true') || inputs.force == true
+        with:
+          branch: ${{ github.ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+
+      - name: Create new release
+        uses: softprops/action-gh-release@v1
+        if: (steps.verify-changed-files-vendor.outputs.files_changed == 'true' && steps.verify-changed-files-release.outputs.files_changed == 'true') || inputs.force == true
+        with:
+          files: "loki-boshrelease.tgz"
+          tag_name: "v${{ env.LOKI_BOSHRELEASE_VERSION }}"
+          token: ${{ secrets.GITHUB_TOKEN }}

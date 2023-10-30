@@ -1,17 +1,34 @@
 auth_enabled: <%= p('loki.auth.enabled') %>
 
 server:
+  http_listen_network: <%= p('loki.server.http_listen_network') %>
   http_listen_address: <%= p('loki.server.http_listen_address') %>
   http_listen_port: <%= p('loki.server.http_listen_port') %>
-<% if_p("loki.tls", "loki.mtls") do |loki_tls,loki_mtls| %>
-<% if loki_tls == true || loki_mtls == true %>
+  http_listen_conn_limit: <%= p('loki.server.http_listen_conn_limit') %>
+<% if_p("loki.http.tls", "loki.http.mtls") do |loki_http_tls,loki_http_mtls| %>
+<% if loki_http_tls == true || loki_http_mtls == true %>
   http_tls_config:
-    cert_file: /var/vcap/jobs/loki/certs/cert.pem
-    key_file: /var/vcap/jobs/loki/certs/cert.key
+    cert_file: /var/vcap/jobs/loki/http/certs/cert.pem
+    key_file: /var/vcap/jobs/loki/http/certs/cert.key
 <% end %>
-<% if loki_mtls == true %>
-    client_ca_file: /var/vcap/jobs/loki/certs/ca.pem
-    client_auth_type: <%= p('loki.client_auth_type') %>
+<% if loki_http_mtls == true %>
+    client_ca_file: /var/vcap/jobs/loki/http/certs/ca.pem
+    client_auth_type: <%= p('loki.http.client_auth_type') %>
+<% end %>
+<% end %>
+  grpc_listen_network: <%= p('loki.server.grpc_listen_network') %>
+  grpc_listen_address: <%= p('loki.server.grpc_listen_address') %>
+  grpc_listen_port: <%= p('loki.server.grpc_listen_port') %>
+  grpc_listen_conn_limit: <%= p('loki.server.grpc_listen_conn_limit') %>
+<% if_p("loki.grpc.tls", "loki.grpc.mtls") do |loki_grpc_tls,loki_grpc_mtls| %>
+<% if loki_grpc_tls == true || loki_grpc_mtls == true %>
+  grpc_tls_config:
+    cert_file: /var/vcap/jobs/loki/grpc/certs/cert.pem
+    key_file: /var/vcap/jobs/loki/grpc/certs/cert.key
+<% end %>
+<% if loki_grpc_mtls == true %>
+    client_ca_file: /var/vcap/jobs/loki/grpc/certs/ca.pem
+    client_auth_type: <%= p('loki.grpc.client_auth_type') %>
 <% end %>
 <% end %>
 
