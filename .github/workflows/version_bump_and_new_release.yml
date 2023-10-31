@@ -144,6 +144,7 @@ jobs:
           branch: ${{ github.ref }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tags: true
+          force: true
 
       - name: Create new release
         uses: softprops/action-gh-release@v1
