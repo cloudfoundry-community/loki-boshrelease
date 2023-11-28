@@ -105,12 +105,12 @@ jobs:
       - name: Remove the blobs
         run: |
           wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /tmp/cache/yq && sudo chmod +x /tmp/cache/yq
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/loki/index.yml
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/promtail/index.yml
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/jq/index.yml
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/loki/index.yml
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/promtail/index.yml
-#          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/license/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/loki/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/promtail/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/jq/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/loki/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/promtail/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/license/index.yml
         shell: bash
 
       - name: Create the bosh release
