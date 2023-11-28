@@ -4,6 +4,10 @@
 
 Please execute the following script `bash create-tls-certs.sh` to create all necessary certificates for the complete setup of all related components.
 
+## Adaptation
+
+Please adjust the configuration files inside the [config](./config) folder and adapt the corresponding values for the req_distinguished_names and subjectAltNames based on your organisation and configuration. 
+
 ## Ca Certificates
 
 ### Loki
