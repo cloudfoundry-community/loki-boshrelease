@@ -1,12 +1,12 @@
-jq-linux64-1.7:
+jq-linux64-1.7.1:
   size: 2319424
-  object_id: 20cfd20c-4c21-4842-45ac-0585fadd9a59
-  sha: sha256:2f312b9587b1c1eddf3a53f9a0b7d276b9b7b94576c85bda22808ca950569716
-loki-linux64-2.9.2:
-  size: 66609152
-  object_id: 9a0e0001-901f-47ea-6db5-5c1800b4ed12
-  sha: sha256:21d2a923b012acff371cc906609c2f8638dcaf3a1c4fcf5f63725b8a711b5e5d
-promtail-linux64-2.9.2:
-  size: 92878184
-  object_id: f99ae5cd-b5e5-43b4-4519-a4c711387e00
-  sha: sha256:a1638cb0745fbed91c8d21f88181375e39313806f374d819d0b80ecef4dbed94
+  object_id: bc37e2e4-1695-4ded-588f-b1da0faf4271
+  sha: sha256:5942c9b0934e510ee61eb3e30273f1b3fe2590df93933a93d7c58b81d19c8ff5
+loki-linux64-2.9.3:
+  size: 66629632
+  object_id: 357b69aa-df92-498e-4c02-a1706ad21413
+  sha: sha256:76b6a0435aae5adae525fd42e2a69e09a347d744437df667475b59a6ef99707c
+promtail-linux64-2.9.3:
+  size: 92902760
+  object_id: 25948e4b-5add-4228-49b1-c2633dd08a1f
+  sha: sha256:a5bcf63b301a2035b16a4e5d8a00d3ee9d8a151785917f9df695a29b939a3bad
