@@ -6,7 +6,7 @@ Please execute the following script `bash create-tls-certs.sh` to create all nec
 
 ## Adaptation
 
-Please adjust the configuration files inside the [config](./config) folder and adapt the corresponding values for the req_distinguished_names and subjectAltNames based on your organisation and configuration. 
+Please adjust the configuration files inside the [config](./config) folder and adapt the corresponding values for the req_distinguished_names and subjectAltNames based on your organisation and configuration. You can find [here](https://support.dnsimple.com/articles/what-is-common-name/) and [here](https://learn.microsoft.com/en-us/azure/application-gateway/self-signed-certificates) more information about the corresponding values and CA certificates in general.
 
 ## Ca Certificates
 
