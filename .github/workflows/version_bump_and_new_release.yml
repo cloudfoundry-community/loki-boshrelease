@@ -49,7 +49,7 @@ jobs:
 
       - name: Identify the used versions
         run: |
-          echo "USED_JQ_VERSION=$(cat config/blobs.yml | grep -o "jq-linux64-[[:digit:]].[[:digit:]]" | cut -d "-" -f 3)" >> $GITHUB_ENV
+          echo "USED_JQ_VERSION=$(cat config/blobs.yml | grep -o "jq-linux64-[[:digit:]].[[:digit:]].[[:digit:]]" | cut -d "-" -f 3)" >> $GITHUB_ENV
           echo "USED_LOKI_VERSION=$(cat config/blobs.yml | grep loki | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
           echo "USED_PROMTAIL_VERSION=$(cat config/blobs.yml | grep promtail | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
 
