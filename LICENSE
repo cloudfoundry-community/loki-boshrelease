@@ -188,8 +188,6 @@
       identification within third-party archives.
 
    Copyright 2019-2023 Andrei Krasnitski
-   Copyright of Loki, Promtail 2023-Present Grafana [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme)
-   Copyright of JQ 2023-Present Multiple authors [MIT license](https://github.com/jqlang/jq/blob/master/COPYING)
    Copyright 2023-Present Pascal Zimmermann
 
    Licensed under the Apache License, Version 2.0 (the "License");
