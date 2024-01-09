@@ -194,6 +194,19 @@ To remove the deployment:
 $ bosh -d loki delete-deployment
 ```
 
+## Clap your hands for the dependencies
+
+The Loki Bosh release wouldn't be possible if it weren't for the great projects and tools they depend on. Please check out the list below and clap your hands for them.
+
+### Loki
+[Loki](https://github.com/grafana/loki) is a highly available, horizontally scalable, multi-tenant log aggregation system inspired by Prometheus system. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme).
+
+### Promtail
+[Promtail](https://github.com/grafana/loki) is an agent which forward the content of logs to a Loki instance. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme).
+
+### JQ
+[JQ](https://github.com/jqlang/jq) is a command-line JSON processor. It's licensed under the [[MIT license](https://github.com/jqlang/jq/blob/master/COPYING).
+
 ## Contribution
 If you would like to contribute something, have an improvement request, or want to make a change inside the code, please open a pull request.
 
