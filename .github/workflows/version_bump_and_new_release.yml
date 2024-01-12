@@ -28,7 +28,7 @@ jobs:
       - name: Checkout the latest Loki Boshrelease
         uses: actions/checkout@v4
         with:
-          repository: ZPascal/loki-boshrelease
+          repository: cloudfoundry-community/loki-boshrelease
           submodules: "recursive"
           persist-credentials: false
 

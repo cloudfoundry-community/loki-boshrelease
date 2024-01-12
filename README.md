@@ -12,7 +12,7 @@ Assuming you've installed `BOSH CLI` and have a running BOSH Director.
 ## Create a local Loki BOSH dev release
 
 ```
-$ git clone https://github.com/ZPascal/loki-boshrelease.git
+$ git clone https://github.com/cloudfoundry-community/loki-boshrelease.git
 
 # Check if updates are available and maybe update the blobs (on scratch creation of the release, please use the --force parameter)
 $ bash scripts/update-the-blobs.sh (--force)
