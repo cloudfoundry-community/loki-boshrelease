@@ -1,0 +1,37 @@
+name: loki
+version: "3"
+commit_hash: 3c91575
+uncommitted_changes: true
+jobs:
+- name: loki
+  version: 85727dbd32ac0f82b6f35885b3d9eacfc052a3f292d792055000fca29c22ce82
+  fingerprint: 85727dbd32ac0f82b6f35885b3d9eacfc052a3f292d792055000fca29c22ce82
+  sha1: sha256:63dac0a5f88b1cf71bd9574297805586a0e8eeb1ee0eea54dd2a0eff02d9c9cd
+  packages:
+  - loki
+- name: promtail
+  version: f324136d35777af6baac5691d947274b1f9f117f11813d4b8a3502b3129c0e2c
+  fingerprint: f324136d35777af6baac5691d947274b1f9f117f11813d4b8a3502b3129c0e2c
+  sha1: sha256:4e77bf7f7df6c444f9aaaa0da9deabd9c2b718a41d5262ed0d768ceff3cf785d
+  packages:
+  - promtail
+packages:
+- name: jq
+  version: 768bdd356ca485672239cc23fb673e79d32b4fbcfcbf20b5d01c5197671ca0f7
+  fingerprint: 768bdd356ca485672239cc23fb673e79d32b4fbcfcbf20b5d01c5197671ca0f7
+  sha1: sha256:cee25c4eaab81cbeea9677c7e48ed59a07c4b234f137f37ad80fb0eacfb5759b
+  dependencies: []
+- name: loki
+  version: 16b421cf7586af096c0f8a20790e178398495996a3627fd608417265bf01bf0c
+  fingerprint: 16b421cf7586af096c0f8a20790e178398495996a3627fd608417265bf01bf0c
+  sha1: sha256:ef3ab188efb1b8b779ee58859e67801faca0c0f3724f543b0b759684a98519ba
+  dependencies: []
+- name: promtail
+  version: 94544ae37aba4aa8bbfc8c092811b4f4574262fe25b17764caa37313f92e6ea1
+  fingerprint: 94544ae37aba4aa8bbfc8c092811b4f4574262fe25b17764caa37313f92e6ea1
+  sha1: sha256:5ac5856a97ae4e5decb3ca21a08ed0c29f1f288f6c621aa755996d92e0750bd0
+  dependencies: []
+license:
+  version: c5278e4f4b6e2c248e96e4619d8a3fcd68f4c29a594859b11f64b3395499744f
+  fingerprint: c5278e4f4b6e2c248e96e4619d8a3fcd68f4c29a594859b11f64b3395499744f
+  sha1: sha256:75f63fee5e5f50773c01141fe1e39e9fb599d6bf1bb6445ee7a62fa6897a48e2
