@@ -120,7 +120,6 @@ jobs:
 
       - name: Check changed files
         if: steps.verify-changed-files-vendor.outputs.files_changed == 'true' || inputs.force == true
-
         uses: tj-actions/verify-changed-files@v18
         id: verify-changed-files-release
         with:
