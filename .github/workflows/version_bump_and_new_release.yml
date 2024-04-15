@@ -146,7 +146,7 @@ jobs:
           force: true
 
       - name: Create new release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: (steps.verify-changed-files-vendor.outputs.files_changed == 'true' && steps.verify-changed-files-release.outputs.files_changed == 'true') || inputs.force == true
         with:
           files: "loki-boshrelease.tgz"
