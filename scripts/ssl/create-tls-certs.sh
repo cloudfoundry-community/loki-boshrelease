@@ -19,33 +19,25 @@ openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_loki.key -out 
 
 # Create the Promtail ca
 echo "Create the Promtail ca"
-openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_promtail.key -out ca_promtail.crt -days 3650 \
--extensions ext \
--config $path/ca_promtail.conf
+openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_promtail.key -out ca_promtail.crt -days 3650 -extensions ext -config $path/ca_promtail.conf
 
 # Create the server certificates
 echo "Create the Loki server certificates"
 openssl genrsa -out loki.key 4096
-openssl req -new -key loki.key -out loki.csr \
--extensions v3_req \
--config $path/server_loki.conf
-openssl x509 -inform der -req -days 1825 -in loki.csr -CA ca_loki.crt -CAkey ca_loki.key -CAcreateserial -out loki.pem -extensions v3_req -extfile $path/server_loki.conf
+openssl req -new -key loki.key -out loki.csr -extensions v3_req -config $path/server_loki.conf
+openssl x509 -inform pem -req -days 1825 -in loki.csr -CA ca_loki.crt -CAkey ca_loki.key -CAcreateserial -out loki.pem -extensions v3_req -extfile $path/server_loki.conf
 
 # Create the Promtail certificates
 echo "Create the Promtail server certificates"
 openssl genrsa -out promtail.key 4096
-openssl req -new -key promtail.key -out promtail.csr \
--extensions v3_req \
--config $path/server_promtail.conf
-openssl x509 -inform der -req -days 1825 -in promtail.csr -CA ca_promtail.crt -CAkey ca_promtail.key -CAcreateserial -out promtail.pem -extensions v3_req -extfile $path/server_promtail.conf
+openssl req -new -key promtail.key -out promtail.csr -extensions v3_req -config $path/server_promtail.conf
+openssl x509 -inform pem -req -days 1825 -in promtail.csr -CA ca_promtail.crt -CAkey ca_promtail.key -CAcreateserial -out promtail.pem -extensions v3_req -extfile $path/server_promtail.conf
 
 # Create the Syslog certificates
 echo "Create the Syslog server certificates"
 openssl genrsa -out syslog.key 4096
-openssl req -new -key syslog.key -out syslog.csr \
--extensions v3_req \
--config $path/server_syslog.conf
-openssl x509 -inform der -req -days 1825 -in syslog.csr -CA ca_syslog.crt -CAkey ca_syslog.key -CAcreateserial -out syslog.pem -extensions v3_req -extfile $path/server_syslog.conf
+openssl req -new -key syslog.key -out syslog.csr -extensions v3_req -config $path/server_syslog.conf
+openssl x509 -inform pem -req -days 1825 -in syslog.csr -CA ca_syslog.crt -CAkey ca_syslog.key -CAcreateserial -out syslog.pem -extensions v3_req -extfile $path/server_syslog.conf
 
 # Create the client certificates
 echo "Create the Grafana client certificates"
