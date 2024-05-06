@@ -63,6 +63,14 @@ properties:
     description: "A object_store storage for Loki (filesystem, bigtable, dynamodb)"
     default: filesystem
 
+  loki.index.v2.storage:
+    description: "An index storage for Loki (boltdb, gcs, s3)"
+    default: boltdb
+
+  loki.object_store.v2.storage:
+    description: "A object_store storage for Loki (filesystem, bigtable, dynamodb)"
+    default: filesystem
+
   loki.compactor.compaction_interval:
     description: "Specify the compactor compaction interval"
     default: "10m"
@@ -85,7 +93,7 @@ properties:
 
   loki.validation.allow_structured_metadata:
     description: "Enforce every sample has a structured metadata"
-    default: true
+    default: false
 
   loki.validation.reject_old_samples:
     description: "Reject old samples"

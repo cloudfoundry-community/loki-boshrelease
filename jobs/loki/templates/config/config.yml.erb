@@ -60,18 +60,20 @@ schema_config:
 <% if p('loki.object_store.storage') == "filesystem" %>
       object_store: filesystem
 <% end %>
+<% if p('loki.index.storage') == "boltdb" %>
       schema: v11
       index:
         prefix: index_
         period: <%= p('loki.retention.period') %>
-<% if p('loki.index.storage') == "tsdb" %>
+<% end %>
+<% if p('loki.index.v2.storage') == "tsdb" %>
      - from: 2024-05-01
       store: tsdb
 <% end %>
-<% if p('loki.index.storage') == "tsdb" && p('loki.object_store.storage') == "filesystem" %>
+<% if p('loki.index.v2.storage') == "tsdb" && p('loki.object_store.v2.storage') == "filesystem" %>
       object_store: filesystem
 <% end %>
-<% if p('loki.index.storage') == "tsdb" %>
+<% if p('loki.index.v2.storage') == "tsdb" %>
       schema: v13
       index:
         prefix: index_
