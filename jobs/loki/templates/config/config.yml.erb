@@ -43,6 +43,14 @@ ingester:
   chunk_idle_period: 5m
   chunk_retain_period: 30s
 
+compactor:
+  working_directory: /var/vcap/store/loki/retention
+  compaction_interval: <%= p('loki.compactor.compaction_interval') %>
+  retention_enabled: <%= p('loki.compactor.retention_enabled') %>
+  retention_delete_delay: <%= p('loki.compactor.retention_delete_delay') %>
+  retention_delete_worker_count: <%= p('loki.compactor.retention_delete_worker_count') %>
+  delete_request_store: <%= p('loki.compactor.delete_request_store') %>
+
 schema_config:
   configs:
     - from: 2023-02-24
@@ -52,26 +60,48 @@ schema_config:
 <% if p('loki.object_store.storage') == "filesystem" %>
       object_store: filesystem
 <% end %>
+<% if p('loki.index.storage') == "boltdb" %>
       schema: v11
       index:
         prefix: index_
         period: <%= p('loki.retention.period') %>
+<% end %>
+<% if p('loki.index.v2.storage') == "tsdb" %>
+     - from: 2024-05-01
+      store: tsdb
+<% end %>
+<% if p('loki.index.v2.storage') == "tsdb" && p('loki.object_store.v2.storage') == "filesystem" %>
+      object_store: filesystem
+<% end %>
+<% if p('loki.index.v2.storage') == "tsdb" %>
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+<% end %>
 
 storage_config:
 <% if p('loki.index.storage') == "boltdb" %>
   boltdb:
     directory: /var/vcap/store/loki/index
 <% end %>
-  
+
+<% if p('loki.index.storage') == "tsdb" %>
+  tsdb_shipper:
+    active_index_directory: /var/vcap/store/loki/tsdb-index
+    cache_location: /var/vcap/store/loki/tsdb-cache
+<% end %>
+
 <% if p('loki.object_store.storage') == "filesystem" %>
   filesystem:
     directory: /var/vcap/store/loki/chunks
 <% end %>
 
 limits_config:
-  enforce_metric_name: <%= p('loki.validation.enforce_metric_name') %>
+  allow_structured_metadata: <%= p('loki.validation.allow_structured_metadata') %>
   reject_old_samples: <%= p('loki.validation.reject_old_samples') %>
   reject_old_samples_max_age: <%= p('loki.validation.reject_old_samples_max_age') %>
+  retention_period: <%= p('loki.validation.retention_period') %>
 
 query_range:
   results_cache:

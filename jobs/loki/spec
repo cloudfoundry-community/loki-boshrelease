@@ -56,16 +56,44 @@ properties:
     default: 0
 
   loki.index.storage:
-    description: "An index storage for Loki (boltdb, gcs, s3)"
-    default: boltdb
+    description: "An index storage for Loki (tsdb, gcs, s3)"
+    default: tsdb
 
   loki.object_store.storage:
     description: "A object_store storage for Loki (filesystem, bigtable, dynamodb)"
     default: filesystem
 
-  loki.validation.enforce_metric_name:
-    description: "Enforce every sample has a metric name"
+  loki.index.v2.storage:
+    description: "An index storage for Loki (boltdb, gcs, s3)"
+    default: boltdb
+
+  loki.object_store.v2.storage:
+    description: "A object_store storage for Loki (filesystem, bigtable, dynamodb)"
+    default: filesystem
+
+  loki.compactor.compaction_interval:
+    description: "Specify the compactor compaction interval"
+    default: "10m"
+
+  loki.compactor.retention_enabled:
+    description: "Specify if the compactor retention is enabled"
     default: true
+
+  loki.compactor.retention_delete_delay:
+    description: "Specify the compactor retention deletion delay"
+    default: "24h"
+
+  loki.compactor.retention_delete_worker_count:
+    description: "Specify the compactor retention deletion worker count"
+    default: 150
+
+  loki.compactor.delete_request_store:
+    description: "Specify the compactor deletion request store"
+    default: "filesystem"
+
+  loki.validation.allow_structured_metadata:
+    description: "Enforce every sample has a structured metadata"
+    default: false
 
   loki.validation.reject_old_samples:
     description: "Reject old samples"
@@ -74,6 +102,10 @@ properties:
   loki.validation.reject_old_samples_max_age:
     description: "Reject old samples max age"
     default: ""
+
+  loki.validation.retention_period:
+    description: "Max retention period for the config limits needs to be a duration in string format that can be parsed using time.Duration"
+    default: "672h"
 
   loki.retention.period:
     description: "Retention period needs to be a duration in string format that can be parsed using time.Duration"
