@@ -1,12 +1,12 @@
 jq-linux64-1.7.1:
   size: 2319424
-  object_id: 75afda38-29be-483b-5399-7ff0bc088203
+  object_id: d074a2e5-f61a-47be-54d4-144f8d8306ce
   sha: sha256:5942c9b0934e510ee61eb3e30273f1b3fe2590df93933a93d7c58b81d19c8ff5
-loki-linux64-2.9.6:
-  size: 66740224
-  object_id: b5804bd1-93ed-4170-48cd-275ad7af9770
-  sha: sha256:0901b44483dd8e9da1b874f801a8fdb1b0ba9d21cca02de8afc48029e3a62880
-promtail-linux64-2.9.6:
-  size: 93882184
-  object_id: 06516113-39d7-4224-41cb-1d93c9b43a77
-  sha: sha256:cd9fdca408fbd185a367165a9bf9291b6b18f3f4114fdbee651f1b3aab5acc2a
+loki-linux64-3.0.0:
+  size: 72376320
+  object_id: f1bf8089-ec79-4292-70f5-b6832c7e79f3
+  sha: sha256:dcd839cd9d8ceb2c49628cff41edad2182f9a15f625ccab66361c5ae34249279
+promtail-linux64-3.0.0:
+  size: 96745256
+  object_id: 20d248b2-deb9-4788-632b-d06cf7632420
+  sha: sha256:82fa7ebdc734b8cadc16c486722a2678dfb2e82e4630badbaa99bfe3bd7d46fa
