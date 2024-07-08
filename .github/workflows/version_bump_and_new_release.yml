@@ -23,7 +23,7 @@ jobs:
       - name: Download Bosh CLI
         run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${BOSH_VERSION}-linux-amd64 > bosh && chmod 777 bosh
         env:
-          BOSH_VERSION: 7.5.3
+          BOSH_VERSION: 7.6.1
 
       - name: Checkout the latest Loki Boshrelease
         uses: actions/checkout@v4
@@ -87,7 +87,7 @@ jobs:
         shell: bash
 
       - name: Check changed files
-        uses: tj-actions/verify-changed-files@v18
+        uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files-vendor
         with:
           files: |
@@ -120,7 +120,7 @@ jobs:
 
       - name: Check changed files
         if: steps.verify-changed-files-vendor.outputs.files_changed == 'true' || inputs.force == true
-        uses: tj-actions/verify-changed-files@v18
+        uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files-release
         with:
           files: |
