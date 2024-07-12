@@ -12,6 +12,8 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    env:
+      BOSH_VERSION: 7.6.1
 
     steps:
       - name: Install the requirements
@@ -20,10 +22,19 @@ jobs:
       - name: Create the cache
         run: mkdir /tmp/cache /tmp/loki-blobs
 
+      - name: Create the BOSH private.yml file
+        run: |
+          cat - > config/private.yml <<EOS
+          ---
+          blobstore:
+            options:
+              credentials_source: static
+              json_key: |
+                ${{ secrets.GCP_BLOBSTORE_JSON_KEY }}
+          EOS
+
       - name: Download Bosh CLI
-        run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${BOSH_VERSION}-linux-amd64 > bosh && chmod 777 bosh
-        env:
-          BOSH_VERSION: 7.6.1
+        run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${{ env.BOSH_VERSION }}-linux-amd64 > bosh && chmod 777 bosh
 
       - name: Checkout the latest Loki Boshrelease
         uses: actions/checkout@v4
