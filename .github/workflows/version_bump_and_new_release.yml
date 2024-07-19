@@ -12,18 +12,29 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    env:
+      BOSH_VERSION: 7.6.1
 
     steps:
       - name: Install the requirements
         run: sudo apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC sudo apt install jq curl git sed nodejs make wget unzip -y
 
       - name: Create the cache
-        run: mkdir /tmp/cache /tmp/loki-blobs
+        run: mkdir /tmp/cache
+
+      - name: Create the BOSH private.yml file
+        run: |
+          cat - > config/private.yml <<EOS
+          ---
+          blobstore:
+            options:
+              credentials_source: static
+              json_key: |
+                ${{ secrets.GCP_BLOBSTORE_JSON_KEY }}
+          EOS
 
       - name: Download Bosh CLI
-        run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${BOSH_VERSION}-linux-amd64 > bosh && chmod 777 bosh
-        env:
-          BOSH_VERSION: 7.6.1
+        run: cd /tmp/cache && curl -sL https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_VERSION}/bosh-cli-${{ env.BOSH_VERSION }}-linux-amd64 > bosh && chmod 777 bosh
 
       - name: Checkout the latest Loki Boshrelease
         uses: actions/checkout@v4
@@ -112,6 +123,17 @@ jobs:
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/promtail/index.yml
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/license/index.yml
         shell: bash
+
+      - name: Create the BOSH private.yml file
+        run: |
+          cat - > config/private.yml <<EOS
+          ---
+          blobstore:
+            options:
+              credentials_source: static
+              json_key: |
+                ${{ secrets.GCP_BLOBSTORE_JSON_KEY }}
+          EOS
 
       - name: Create the bosh release
         id: loki-boshrelease
