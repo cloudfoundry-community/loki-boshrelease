@@ -3,4 +3,4 @@ name: promtail
 
 files:
   - common/utils.sh
-  - promtail-linux64-3.1.0
+  - promtail-linux64-3.1.1
