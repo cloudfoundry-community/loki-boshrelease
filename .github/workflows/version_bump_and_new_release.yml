@@ -68,7 +68,7 @@ jobs:
           EOS
 
       - name: Check the BOSH private.yml file
-        run: ls -la config
+        run: ls -la config && cat config/private.yml
       
       - name: Execute the version bump
         run: |
