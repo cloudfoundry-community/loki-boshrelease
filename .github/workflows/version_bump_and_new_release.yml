@@ -67,6 +67,9 @@ jobs:
                 echo ${{ secrets.GCP_BLOBSTORE_JSON_KEY_BASE64 }} | base64 --decode
           EOS
 
+      - name: Check the BOSH private.yml file
+        run: ls -la config
+      
       - name: Execute the version bump
         run: |
           curl -sL $LATEST_JQ_DOWNLOAD_URL -o /tmp/cache/jq-linux64-$LATEST_JQ_VERSION
