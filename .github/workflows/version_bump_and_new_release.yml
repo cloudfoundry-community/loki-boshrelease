@@ -64,7 +64,7 @@ jobs:
             options:
               credentials_source: static
               json_key: |
-                ${{ secrets.GCP_BLOBSTORE_JSON_KEY }}
+                echo ${{ secrets.GCP_BLOBSTORE_JSON_KEY_BASE64 }} | base64 --decode
           EOS
 
       - name: Execute the version bump
