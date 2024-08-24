@@ -65,7 +65,7 @@ jobs:
             options:
               credentials_source: static
               json_key: |
-                ${{ env.GCP_BLOBSTORE_JSON_KEY }}
+                $GCP_BLOBSTORE_JSON_KEY
           EOS
 
       - name: Check the BOSH private.yml file
