@@ -53,9 +53,6 @@ jobs:
           echo "USED_LOKI_VERSION=$(cat config/blobs.yml | grep loki | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
           echo "USED_PROMTAIL_VERSION=$(cat config/blobs.yml | grep promtail | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
 
-      - name: Delete the blob configuration temporary
-        run: rm config/blobs.yml 2> /dev/null && touch config/blobs.yml
-
       - name: Create the BOSH private.yml file
         run: |
           export GCP_BLOBSTORE_JSON_KEY=$(echo ${{ secrets.GCP_BLOBSTORE_JSON_KEY_BASE64 }} | base64 --decode)
