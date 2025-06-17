@@ -1,31 +1,45 @@
 #!/usr/bin/env bash
 
+# GitHub Token support
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 while [[ "$#" -gt 0 ]]; do
     case $1 in
+    -g|--github-token)
+      GITHUB_TOKEN="$2"; export GITHUB_TOKEN; shift 2 ;;
     -f|--force) force="TRUE"; shift ;;
     ?|h)
-      echo "Usage: $(basename $0) [-f]"
+      echo "Usage: $(basename $0) [--force] [--github-token <token>]"
       exit 1
       ;;
+    *) shift ;;
   esac
 done
 
+github_api() {
+  local url="$1"
+  if [[ -n "$GITHUB_TOKEN" ]]; then
+    curl --silent -H "Authorization: Bearer $GITHUB_TOKEN" -L "$url"
+  else
+    curl --silent -L "$url"
+  fi
+}
+
 get_latest_loki_release() {
-  curl --silent -L "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
+  github_api "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
 }
 
 # shellcheck disable=SC2034
 loki_version=$(get_latest_loki_release)
 
 get_latest_jq_release() {
-  curl --silent -L "https://api.github.com/repos/jqlang/jq/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "-" -f 2
+  github_api "https://api.github.com/repos/jqlang/jq/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "-" -f 2
 }
 
 # shellcheck disable=SC2034
 jq_version=$(get_latest_jq_release)
 
 get_latest_promtail_release() {
-  curl --silent -L "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
+  github_api "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
 }
 
 # shellcheck disable=SC2034
