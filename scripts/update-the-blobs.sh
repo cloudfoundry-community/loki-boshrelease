@@ -8,7 +8,7 @@ while [[ "$#" -gt 0 ]]; do
       GITHUB_TOKEN="$2"; export GITHUB_TOKEN; shift 2 ;;
     -f|--force) force="TRUE"; shift ;;
     ?|h)
-      echo "Usage: $(basename $0) [--force] [--github-token <token>]"
+      echo "Usage: $(basename $0) [-f] [-g <token>]"
       exit 1
       ;;
     *) shift ;;
