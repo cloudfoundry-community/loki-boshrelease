@@ -40,7 +40,7 @@ positions:
   filename: <%= p('promtail.positions.filename') %>
 clients:
 <% if_p("promtail.loki.tls", "promtail.loki.mtls") do |promtail_loki_tls,promtail_loki_mtls| %>
-  - url: <% if promtail_loki_tls == true || promtail_loki_mtls == true %>https://<% else %>https://<% end %><%= p('promtail.loki.server.http_listen_address') %>:<%= p('promtail.loki.server.http_listen_port') %>/loki/api/v1/push
+  - url: <% if promtail_loki_tls == true || promtail_loki_mtls == true %>https://<% else %>http://<% end %><%= p('promtail.loki.server.http_listen_address') %>:<%= p('promtail.loki.server.http_listen_port') %>/loki/api/v1/push
 <% if promtail_loki_tls == true || promtail_loki_mtls == true %>
     tls_config:
       ca_file: /var/vcap/jobs/promtail/loki/certs/ca.pem
