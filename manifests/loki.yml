@@ -36,18 +36,20 @@ instance_groups:
           promtail: { as: promtail, shared: true }
         properties:
           promtail:
-            tls: false
+            http:
+              tls: false
             server:
               http_listen_address: localhost
               http_listen_port: 9090
-            external_labels:
-              - syslog: "input"
+            loki:
+              external_labels:
+                syslog: "input"
             syslog:
               listen_address: 0.0.0.0
               listen_port: 601
               idle_timeout: 300
               labels:
-                - app: "syslog_test"
+                app: "syslog_test"
     networks:
       - name: cf
     stemcell: default
