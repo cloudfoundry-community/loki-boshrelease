@@ -33,6 +33,8 @@ builds:
     version: "11"
   aea68477-643c-4047-5efe-dfeee4352272:
     version: "21"
+  be085608-9f93-4019-56b7-f961b302f8fc:
+    version: "23"
   c4ebc2ee-7979-4c91-5410-f57e7739e32f:
     version: "15"
   e3d8e67d-727c-4128-7cd0-7df3651f2dd9:
