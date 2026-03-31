@@ -202,7 +202,7 @@ The Loki Bosh release wouldn't be possible if it weren't for the great projects 
 [Loki](https://github.com/grafana/loki) is a highly available, horizontally scalable, multi-tenant log aggregation system inspired by Prometheus system. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme).
 
 ### Alloy
-[Alloy](https://github.com/grafana/alloy) is an observability collector that can receive Syslog and forward logs to Loki. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/alloy?tab=AGPL-3.0-1-ov-file#readme).
+[Alloy](https://github.com/grafana/alloy) is an observability collector that can receive Syslog and forward logs to Loki. It's licensed under the [Apache 2.0 license](https://github.com/grafana/alloy/blob/main/LICENSE).
 
 ### JQ
 [JQ](https://github.com/jqlang/jq) is a command-line JSON processor. It's licensed under the [[MIT license](https://github.com/jqlang/jq/blob/master/COPYING).
