@@ -1,0 +1,5 @@
+check process alloy
+  with pidfile /var/vcap/sys/run/alloy/alloy.pid
+  start program "/var/vcap/jobs/alloy/bin/alloy_ctl start"
+  stop program "/var/vcap/jobs/alloy/bin/alloy_ctl stop"
+  group vcap

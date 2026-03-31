@@ -1,4 +1,4 @@
-# Example of the cert creation for the Loki/ Promtail/ Syslog setup
+# Example of the cert creation for the Loki/ Alloy/ Syslog setup
 
 ## Creation
 
@@ -14,13 +14,13 @@ Please adjust the configuration files inside the [config](./config) folder and a
 
 Describes the Certificate Authority (certificate & key) for the Loki backend server.
 
-### Promtail
+### Alloy
 
-Describes the Certificate Authority (certificate & key) for the Promtail forwarder server.
+Describes the Certificate Authority (certificate & key) for the Alloy forwarder server.
 
 ### Syslog
 
-Describes the Certificate Authority (certificate & key) for the Promtail Syslog plugin.
+Describes the Certificate Authority (certificate & key) for the Alloy Syslog plugin.
 
 ## Server Certificates
 
@@ -28,9 +28,9 @@ Describes the Certificate Authority (certificate & key) for the Promtail Syslog 
 
 Describes the server certificate and key for the Loki server, and it's signed by the Loki CA.
 
-### Promtail
+### Alloy
 
-Describes the server certificate and key for the Promtail server, and it's signed by the Promtail CA.
+Describes the server certificate and key for the Alloy server, and it's signed by the Alloy CA.
 
 ### Syslog
 
@@ -42,9 +42,9 @@ Describes the server certificate and key for the Syslog plugin, and it's signed 
 
 Describes the client certificate and key for the Loki backend server, and it's signed by the Loki CA.
 
-### Promtail
+### Alloy
 
-Describes the client certificate and key for the Promtail server, and it's signed by the Promtail CA.
+Describes the client certificate and key for the Alloy server, and it's signed by the Alloy CA.
 
 ### Syslog
 
@@ -56,7 +56,7 @@ Describes the client certificate and key for the Syslog plugin, and it's signed 
 flowchart LR
 
 A[Syslog Client e.g. CF system] -->|establish connection via port 6514| B(Syslog server)
-B -->|forwards the message via port 9100| C(Promtail)
+B -->|forwards the message via port 9100| C(Alloy)
 C -->|forwards the message via port 3100| D[Loki]
 D <-->|scrapes the data via the HTTP API over port 3100| E[Monitoring tool e.g. Grafana/ Plutono]
 ```
