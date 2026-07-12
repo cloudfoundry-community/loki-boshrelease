@@ -5,7 +5,7 @@ set -euo pipefail
 mkdir -p ${BOSH_INSTALL_TARGET}/common
 cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-# Copy Promtail binary
+# Copy Alloy binary
 mkdir -p "${BOSH_INSTALL_TARGET}/bin"
-cp -a promtail-linux64-* "${BOSH_INSTALL_TARGET}/bin/promtail"
-chmod +x "${BOSH_INSTALL_TARGET}/bin/promtail"
+cp -a alloy-linux64-* "${BOSH_INSTALL_TARGET}/bin/alloy"
+chmod +x "${BOSH_INSTALL_TARGET}/bin/alloy"

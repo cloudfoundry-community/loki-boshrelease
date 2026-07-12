@@ -6,7 +6,7 @@ loki-linux64-3.6.7:
   size: 129757368
   object_id: 82b9804d-586b-4413-5dd5-6b135d1f6fd6
   sha: sha256:a0c0fac6aabe838678fdff0f8eb1c811bfe0792a6d7ef86ecb3d9a27e77ec00c
-promtail-linux64-3.6.7:
+alloy-linux64-1.15.0:
   size: 114306736
   object_id: 8d634d04-2de8-419b-547e-1efb74cedcb7
   sha: sha256:69f0b043407033d273e49bd888d244b1379ef14d22faf829fc99407d5f4794b6

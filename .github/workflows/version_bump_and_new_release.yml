@@ -1,4 +1,4 @@
-name: Version bump the Jq, Loki, Promtail version and create a new release
+name: Version bump the Jq, Loki, Alloy version and create a new release
 on:
   workflow_dispatch:
     inputs:
@@ -36,13 +36,13 @@ jobs:
         run: |
           echo "LATEST_JQ_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/jqlang/jq/releases/latest | jq -r '.assets[].browser_download_url' | grep 'jq-linux-amd64$')" >> $GITHUB_ENV
           echo "LATEST_LOKI_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.assets[].browser_download_url' | grep 'loki-linux-amd64')" >> $GITHUB_ENV
-          echo "LATEST_PROMTAIL_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.assets[].browser_download_url' | grep 'promtail-linux-amd64')" >> $GITHUB_ENV
+          echo "LATEST_ALLOY_DOWNLOAD_URL=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/alloy/releases/latest | jq -r '.assets[].browser_download_url' | grep 'alloy-linux-amd64.zip$')" >> $GITHUB_ENV
 
       - name: Get latest versions
         run: |
           echo "LATEST_JQ_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/jqlang/jq/releases/latest | jq -r '.tag_name' | sed 's/jq-//')" >> $GITHUB_ENV
           echo "LATEST_LOKI_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> $GITHUB_ENV
-          echo "LATEST_PROMTAIL_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/loki/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> $GITHUB_ENV
+          echo "LATEST_ALLOY_VERSION=$(curl -sL https://tis-service-user:${{ secrets.TIS_PUBLIC_API_READ_TOKEN }}@api.github.com/repos/grafana/alloy/releases/latest | jq -r '.tag_name' | sed 's/v//')" >> $GITHUB_ENV
 
       - name: Set the Git safe directory
         run: git config --global --add safe.directory /__w/loki-boshrelease/loki-boshrelease
@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "USED_JQ_VERSION=$(cat config/blobs.yml | grep -o "jq-linux64-[[:digit:]].[[:digit:]].[[:digit:]]" | cut -d "-" -f 3)" >> $GITHUB_ENV
           echo "USED_LOKI_VERSION=$(cat config/blobs.yml | grep loki | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
-          echo "USED_PROMTAIL_VERSION=$(cat config/blobs.yml | grep promtail | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
+          echo "USED_ALLOY_VERSION=$(cat config/blobs.yml | grep alloy | cut -d "-" -f 3 | cut -d ":" -f 1)" >> $GITHUB_ENV
 
       - name: Delete the blob configuration temporary
         run: rm config/blobs.yml 2> /dev/null && touch config/blobs.yml
@@ -64,10 +64,10 @@ jobs:
           unzip /tmp/cache/loki-linux64-$LATEST_LOKI_VERSION.zip -d /tmp/cache
           rm /tmp/cache/loki-linux64-$LATEST_LOKI_VERSION.zip
           /tmp/cache/bosh add-blob /tmp/cache/loki-linux-amd64 loki-linux64-$LATEST_LOKI_VERSION
-          curl -sL $LATEST_PROMTAIL_DOWNLOAD_URL -o /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip
-          unzip /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip -d /tmp/cache
-          rm /tmp/cache/promtail-linux64-$LATEST_PROMTAIL_VERSION.zip
-          /tmp/cache/bosh add-blob /tmp/cache/promtail-linux-amd64 promtail-linux64-$LATEST_PROMTAIL_VERSION
+          curl -sL $LATEST_ALLOY_DOWNLOAD_URL -o /tmp/cache/alloy-linux-amd64-$LATEST_ALLOY_VERSION.zip
+          unzip /tmp/cache/alloy-linux-amd64-$LATEST_ALLOY_VERSION.zip -d /tmp/cache
+          rm /tmp/cache/alloy-linux-amd64-$LATEST_ALLOY_VERSION.zip
+          /tmp/cache/bosh add-blob /tmp/cache/alloy-linux-amd64 alloy-linux64-$LATEST_ALLOY_VERSION
           /tmp/cache/bosh blobs
           /tmp/cache/bosh upload-blobs
         shell: bash
@@ -81,9 +81,9 @@ jobs:
           sed -i -e "s/loki-linux64-$USED_LOKI_VERSION/loki-linux64-$LATEST_LOKI_VERSION/g" packages/loki/spec
         shell: bash
 
-      - name: Replace the used Promtail version
+      - name: Replace the used Alloy version
         run: |
-          sed -i -e "s/promtail-linux64-$USED_PROMTAIL_VERSION/promtail-linux64-$LATEST_PROMTAIL_VERSION/g" packages/promtail/spec
+          sed -i -e "s/alloy-linux64-$USED_ALLOY_VERSION/alloy-linux64-$LATEST_ALLOY_VERSION/g" packages/alloy/spec
         shell: bash
 
       - name: Check changed files
@@ -106,10 +106,10 @@ jobs:
         run: |
           wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /tmp/cache/yq && sudo chmod +x /tmp/cache/yq
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/loki/index.yml
-          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/promtail/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/jobs/alloy/index.yml
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/jq/index.yml
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/loki/index.yml
-          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/promtail/index.yml
+          /tmp/cache/yq -i 'del(.builds.*)' .final_builds/packages/alloy/index.yml
           /tmp/cache/yq -i 'del(.builds.*)' .final_builds/license/index.yml
         shell: bash
 

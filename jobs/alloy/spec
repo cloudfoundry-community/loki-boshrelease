@@ -1,0 +1,151 @@
+---
+name: alloy
+
+templates:
+  bin/alloy_ctl: bin/alloy_ctl
+  config/config.alloy.erb: config/config.alloy
+  http/certs/ca.pem.erb: http/certs/ca.pem
+  http/certs/cert.pem.erb: http/certs/cert.pem
+  http/certs/cert.key.erb: http/certs/cert.key
+  loki/certs/ca.pem.erb: loki/certs/ca.pem
+  loki/certs/cert.pem.erb: loki/certs/cert.pem
+  loki/certs/cert.key.erb: loki/certs/cert.key
+  syslog/certs/ca.pem.erb: syslog/certs/ca.pem
+  syslog/certs/cert.pem.erb: syslog/certs/cert.pem
+  syslog/certs/cert.key.erb: syslog/certs/cert.key
+
+packages:
+  - alloy
+
+provides:
+  - name: alloy
+    type: alloy
+
+properties:
+  alloy.log.level:
+    description: "Alloy log level"
+    default: "info"
+
+  alloy.server.http_listen_address:
+    description: "Alloy HTTP server listen address"
+    default: "127.0.0.1"
+
+  alloy.server.http_listen_port:
+    description: "Alloy HTTP server listen port"
+    default: 12345
+
+  alloy.http.tls:
+    description: "Enable TLS on Alloy HTTP server"
+    default: false
+
+  alloy.http.mtls:
+    description: "Enable mTLS on Alloy HTTP server"
+    default: false
+
+  alloy.http.client_auth_type:
+      description: "Client auth type for Alloy HTTP mTLS"
+      default: "RequireAndVerifyClientCert"
+
+  alloy.http.cert.ca:
+    description: "CA certificate for Alloy HTTP mTLS"
+    default: ""
+
+  alloy.http.cert.crt:
+    description: "Server certificate for Alloy HTTP TLS"
+    default: ""
+
+  alloy.http.cert.key:
+    description: "Server private key for Alloy HTTP TLS"
+    default: ""
+
+  alloy.storage.path:
+    description: "Alloy storage path"
+    default: "/var/vcap/store/alloy"
+
+  alloy.loki.tls:
+    description: "Use TLS when Alloy pushes to Loki"
+    default: false
+
+  alloy.loki.mtls:
+    description: "Use mTLS when Alloy pushes to Loki"
+    default: false
+
+  alloy.loki.server.http_listen_address:
+    description: "Loki server listen address"
+    default: "127.0.0.1"
+
+  alloy.loki.server.http_listen_port:
+    description: "Loki server listen port"
+    default: 3100
+
+  alloy.loki.server_name:
+    description: "Expected Loki TLS server name"
+    default: ""
+
+  alloy.loki.insecure_skip_verify:
+    description: "Skip Loki TLS certificate verification"
+    default: true
+
+  alloy.loki.external_labels:
+    description: "Static labels attached to all log streams"
+    default: {}
+
+  alloy.loki.cert.ca:
+    description: "Loki CA certificate for TLS"
+    default: ""
+
+  alloy.loki.cert.crt:
+    description: "Alloy client certificate for Loki mTLS"
+    default: ""
+
+  alloy.loki.cert.key:
+    description: "Alloy client key for Loki mTLS"
+    default: ""
+
+  alloy.syslog.listen_address:
+    description: "Syslog receiver listen address"
+    default: "0.0.0.0"
+
+  alloy.syslog.listen_port:
+    description: "Syslog receiver listen port"
+    default: 514
+
+  alloy.syslog.protocol:
+    description: "Syslog listener protocol"
+    default: "tcp"
+
+  alloy.syslog.tls:
+    description: "Enable TLS on Syslog listener"
+    default: false
+
+  alloy.syslog.mtls:
+    description: "Enable mTLS on Syslog listener"
+    default: false
+
+  alloy.syslog.client_auth_type:
+    description: "Client auth type for Syslog mTLS"
+    default: "RequireAndVerifyClientCert"
+
+  alloy.syslog.cert.ca:
+    description: "Syslog client CA for mTLS"
+    default: ""
+
+  alloy.syslog.cert.crt:
+    description: "Server certificate for Syslog TLS"
+    default: ""
+
+  alloy.syslog.cert.key:
+    description: "Server key for Syslog TLS"
+    default: ""
+
+  alloy.syslog.idle_timeout:
+    description: "Syslog idle timeout"
+    default: "300s"
+
+  alloy.syslog.use_incoming_timestamp:
+    description: "Preserve original syslog timestamps"
+    default: true
+
+  alloy.syslog.labels:
+    description: "Optional static labels for syslog streams"
+    default: {}

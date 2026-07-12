@@ -17,9 +17,9 @@ openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_loki.key -out 
 -extensions ext \
 -config $path/ca_loki.conf
 
-# Create the Promtail ca
-echo "Create the Promtail ca"
-openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_promtail.key -out ca_promtail.crt -days 3650 -extensions ext -config $path/ca_promtail.conf
+# Create the Alloy ca
+echo "Create the Alloy ca"
+openssl req -new -x509 -sha256 -newkey rsa:4096 -nodes -keyout ca_alloy.key -out ca_alloy.crt -days 3650 -extensions ext -config $path/ca_alloy.conf
 
 # Create the server certificates
 echo "Create the Loki server certificates"
@@ -27,11 +27,11 @@ openssl genrsa -out loki.key 4096
 openssl req -new -key loki.key -out loki.csr -extensions v3_req -config $path/server_loki.conf
 openssl x509 -inform pem -req -days 1825 -in loki.csr -CA ca_loki.crt -CAkey ca_loki.key -CAcreateserial -out loki.pem -extensions v3_req -extfile $path/server_loki.conf
 
-# Create the Promtail certificates
-echo "Create the Promtail server certificates"
-openssl genrsa -out promtail.key 4096
-openssl req -new -key promtail.key -out promtail.csr -extensions v3_req -config $path/server_promtail.conf
-openssl x509 -inform pem -req -days 1825 -in promtail.csr -CA ca_promtail.crt -CAkey ca_promtail.key -CAcreateserial -out promtail.pem -extensions v3_req -extfile $path/server_promtail.conf
+# Create the Alloy certificates
+echo "Create the Alloy server certificates"
+openssl genrsa -out alloy.key 4096
+openssl req -new -key alloy.key -out alloy.csr -extensions v3_req -config $path/server_alloy.conf
+openssl x509 -inform pem -req -days 1825 -in alloy.csr -CA ca_alloy.crt -CAkey ca_alloy.key -CAcreateserial -out alloy.pem -extensions v3_req -extfile $path/server_alloy.conf
 
 # Create the Syslog certificates
 echo "Create the Syslog server certificates"
@@ -47,8 +47,8 @@ openssl x509 -inform pem -req -days 1825 -in grafana_client.csr -CA ca_loki.crt 
 
 echo "Create the Loki client certificates"
 openssl genrsa -out loki_client.key 4096
-openssl req -new -key loki_client.key -out loki_client.csr -extensions v3_req -config $path/client_promtail.conf
-openssl x509 -inform pem -req -days 1825 -in loki_client.csr -CA ca_promtail.crt -CAkey ca_promtail.key -CAcreateserial -out loki_client.pem -extensions v3_req -extfile $path/client_promtail.conf
+openssl req -new -key loki_client.key -out loki_client.csr -extensions v3_req -config $path/client_alloy.conf
+openssl x509 -inform pem -req -days 1825 -in loki_client.csr -CA ca_alloy.crt -CAkey ca_alloy.key -CAcreateserial -out loki_client.pem -extensions v3_req -extfile $path/client_alloy.conf
 
 echo "Create the UPS client certificates"
 openssl genrsa -out ups_client.key 4096

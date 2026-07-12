@@ -30,12 +30,12 @@ instance_groups:
               reject_old_samples_max_age: 672h
             retention:
               period: "168h"
-      - name: promtail
+      - name: alloy
         release: loki
         provides:
-          promtail: { as: promtail, shared: true }
+          alloy: { as: alloy, shared: true }
         properties:
-          promtail:
+          alloy:
             http:
               tls: false
             server:
@@ -47,7 +47,7 @@ instance_groups:
             syslog:
               listen_address: 0.0.0.0
               listen_port: 601
-              idle_timeout: 300
+              idle_timeout: "300s"
               labels:
                 app: "syslog_test"
     networks:

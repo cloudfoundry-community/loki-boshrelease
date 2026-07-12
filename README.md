@@ -1,6 +1,6 @@
 # Loki BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki), [Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/) and the [Syslog plugin](https://grafana.com/docs/loki/latest/send-data/promtail/configuration/#syslog). The Bosh release supports for the complete system and all components GRPC and mTLS.  
+This is a [BOSH](http://bosh.io/) release for [Loki](https://grafana.com/loki), [Alloy](https://grafana.com/docs/alloy/latest/) and the [Alloy Syslog receiver](https://grafana.com/docs/alloy/latest/reference/components/loki/loki.source.syslog/). The Bosh release supports TLS and mTLS for the complete data path.  
 
 ## Prospects
 It's planned to ship the release to the CloudFoundry community, and I'm currently in discussion with the community to create a public available bosh.io version.
@@ -85,7 +85,7 @@ instance_groups:
           retention:
             period: "168h"
           tls: false
-      promtail:
+      alloy:
           auth:
             enabled: false
           server:
@@ -119,7 +119,7 @@ You can configure TLS by adding the certificates to the properties section
                 -----BEGIN PRIVATE KEY-----
                 ...
                 -----END PRIVATE KEY-----
-        promtail:
+        alloy:
             tls: true
             cert:
               crt: |
@@ -157,7 +157,7 @@ You can configure mTLS by adding the certificates to the properties section
                 -----BEGIN PRIVATE KEY-----
                 ...
                 -----END PRIVATE KEY-----
-        promtail:
+        alloy:
           mtls: true
           client_auth_type: "RequestClientCert"
           cert:
@@ -182,9 +182,9 @@ You can configure mTLS by adding the certificates to the properties section
 
 You can find more available configuration parameters for Loki e.g. HTTP timeouts or the gRPC configuration inside the [spec](jobs/loki/spec) file.
 
-### More configuration parameters for Promtail
+### More configuration parameters for Alloy
 
-You can find more available configuration parameters for Promtail e.g. HTTP timeouts or the gRPC configuration inside the [spec](jobs/promtail/spec) file.
+You can find more available configuration parameters for Alloy (for example HTTP and Syslog receiver options) inside the [spec](jobs/alloy/spec) file.
 
 ## Tear Down the deployment
 
@@ -201,8 +201,8 @@ The Loki Bosh release wouldn't be possible if it weren't for the great projects 
 ### Loki
 [Loki](https://github.com/grafana/loki) is a highly available, horizontally scalable, multi-tenant log aggregation system inspired by Prometheus system. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme).
 
-### Promtail
-[Promtail](https://github.com/grafana/loki) is an agent which forward the content of logs to a Loki instance. It's licensed under the [AGPL-3.0 license](https://github.com/grafana/loki?tab=AGPL-3.0-1-ov-file#readme).
+### Alloy
+[Alloy](https://github.com/grafana/alloy) is an observability collector that can receive Syslog and forward logs to Loki. It's licensed under the [Apache 2.0 license](https://github.com/grafana/alloy/blob/main/LICENSE).
 
 ### JQ
 [JQ](https://github.com/jqlang/jq) is a command-line JSON processor. It's licensed under the [[MIT license](https://github.com/jqlang/jq/blob/master/COPYING).
