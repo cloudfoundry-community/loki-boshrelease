@@ -1,6 +1,6 @@
 ---
 name: loki
 blobstore:
-  provider: local
+  provider: gcs
   options:
-    blobstore_path: /tmp/loki-blobs
+    bucket_name: loki-boshrelease
