@@ -13,3 +13,4 @@ releases/**/*.tgz
 *#
 #*
 /notes/
+/scripts/ssl/certs/
