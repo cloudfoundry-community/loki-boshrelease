@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
+force="FALSE"
+
 # GitHub Token support
 GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 while [[ "$#" -gt 0 ]]; do
@@ -38,12 +42,12 @@ get_latest_jq_release() {
 # shellcheck disable=SC2034
 jq_version=$(get_latest_jq_release)
 
-get_latest_promtail_release() {
-  github_api "https://api.github.com/repos/grafana/loki/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
+get_latest_alloy_release() {
+  github_api "https://api.github.com/repos/grafana/alloy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d "v" -f 2
 }
 
 # shellcheck disable=SC2034
-promtail_version=$(get_latest_promtail_release)
+alloy_version=$(get_latest_alloy_release)
 
 # shellcheck disable=SC2062
 # shellcheck disable=SC2002
@@ -58,7 +62,7 @@ used_jq_version=$(cat config/blobs.yml | grep jq | cut -d "-" -f 3 |  cut -d ":"
 # shellcheck disable=SC2062
 # shellcheck disable=SC2002
 # shellcheck disable=SC2034
-used_promtail_version=$(cat config/blobs.yml | grep promtail | cut -d "-" -f 3 |  cut -d ":" -f 1)
+used_alloy_version=$(cat config/blobs.yml | grep alloy | cut -d "-" -f 3 |  cut -d ":" -f 1)
 
 # shellcheck disable=SC2050
 if [[ "$force" == "TRUE" ]]; then
@@ -87,12 +91,12 @@ if [[ "$loki_version" != "$used_loki_version" || "$force" == "TRUE" ]]; then
 fi
 
 # shellcheck disable=SC2050
-if [[ "$promtail_version" != "$used_promtail_version" || "$force" == "TRUE" ]]; then
-  wget https://github.com/grafana/loki/releases/download/v$promtail_version/promtail-linux-amd64.zip
-  unzip promtail-linux-amd64.zip
-  rm promtail-linux-amd64.zip
-  bosh add-blob promtail-linux-amd64 promtail-linux64-$promtail_version
-  rm promtail-linux-amd64
-  sed -i -e "s/promtail-linux64-${used_promtail_version}/promtail-linux64-${promtail_version}/g" packages/promtail/spec
+if [[ "$alloy_version" != "$used_alloy_version" || "$force" == "TRUE" ]]; then
+  wget https://github.com/grafana/alloy/releases/download/v$alloy_version/alloy-linux-amd64.zip
+  unzip alloy-linux-amd64.zip
+  rm alloy-linux-amd64.zip
+  bosh add-blob alloy-linux-amd64 alloy-linux64-$alloy_version
+  rm alloy-linux-amd64
+  sed -i -e "s/alloy-linux64-${used_alloy_version}/alloy-linux64-${alloy_version}/g" packages/alloy/spec
   bosh upload-blobs
 fi

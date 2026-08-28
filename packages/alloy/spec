@@ -1,0 +1,6 @@
+---
+name: alloy
+
+files:
+  - common/utils.sh
+  - alloy-linux64-1.15.0

@@ -1,0 +1,75 @@
+logging {
+  level  = "<%= p('alloy.log.level') %>"
+  format = "logfmt"
+}
+
+http {
+  listen_addr = "<%= p('alloy.server.http_listen_address') %>"
+  listen_port = <%= p('alloy.server.http_listen_port') %>
+<% if p('alloy.http.tls') || p('alloy.http.mtls') %>
+  tls {
+    cert_file = "/var/vcap/jobs/alloy/http/certs/cert.pem"
+    key_file  = "/var/vcap/jobs/alloy/http/certs/cert.key"
+  <% if p('alloy.http.mtls') %>
+    client_ca_file   = "/var/vcap/jobs/alloy/http/certs/ca.pem"
+    client_auth_type = "<%= p('alloy.http.client_auth_type') %>"
+  <% end %>
+  }
+<% end %>
+}
+
+loki.write "default" {
+  endpoint {
+    url = "<% if p('alloy.loki.tls') || p('alloy.loki.mtls') %>https<% else %>http<% end %>://<%= p('alloy.loki.server.http_listen_address') %>:<%= p('alloy.loki.server.http_listen_port') %>/loki/api/v1/push"
+<% if p('alloy.loki.tls') || p('alloy.loki.mtls') %>
+    tls_config {
+      ca_file              = "/var/vcap/jobs/alloy/loki/certs/ca.pem"
+      server_name          = "<%= p('alloy.loki.server_name') %>"
+      insecure_skip_verify = <%= p('alloy.loki.insecure_skip_verify') %>
+  <% if p('alloy.loki.mtls') %>
+      cert_file = "/var/vcap/jobs/alloy/loki/certs/cert.pem"
+      key_file  = "/var/vcap/jobs/alloy/loki/certs/cert.key"
+  <% end %>
+    }
+<% end %>
+  }
+
+  external_labels = {
+<% p('alloy.loki.external_labels').each_pair do |label, value| %>
+    <%= label.inspect %> = <%= value.to_s.inspect %>
+<% end %>
+  }
+}
+
+loki.process "syslog_labels" {
+  stage.static_labels {
+    values = {
+<% p('alloy.syslog.labels').each_pair do |label, value| %>
+      <%= label.inspect %> = <%= value.to_s.inspect %>
+<% end %>
+    }
+  }
+
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.source.syslog "ingest" {
+  listener {
+    address                = "<%= p('alloy.syslog.listen_address') %>:<%= p('alloy.syslog.listen_port') %>"
+    protocol               = "<%= p('alloy.syslog.protocol') %>"
+    idle_timeout           = "<%= p('alloy.syslog.idle_timeout') %>"
+    use_incoming_timestamp = <%= p('alloy.syslog.use_incoming_timestamp') %>
+<% if p('alloy.syslog.tls') || p('alloy.syslog.mtls') %>
+    tls_config {
+      cert_file = "/var/vcap/jobs/alloy/syslog/certs/cert.pem"
+      key_file  = "/var/vcap/jobs/alloy/syslog/certs/cert.key"
+  <% if p('alloy.syslog.mtls') %>
+      ca_file          = "/var/vcap/jobs/alloy/syslog/certs/ca.pem"
+      client_auth_type = "<%= p('alloy.syslog.client_auth_type') %>"
+  <% end %>
+    }
+<% end %>
+  }
+
+  forward_to = [loki.process.syslog_labels.receiver]
+}
